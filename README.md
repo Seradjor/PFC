@@ -56,56 +56,7 @@ Los requisitos del sistema se dividen en dos categorías: funcionales y no funci
 
 # CASOS DE USO
 
-A continuación, se detallan algunos casos de uso del sistema.
-
-
-| Caso de uso: Registro fichaje empleado |
-|-----------------------------------------|
-| ID: CU-1 |
-| **Descripción:** el empleado aproxima su tarjeta personal por el lector NFC instalado por la empresa. A través de este, el sistema recoge el número identificativo del empleado registrado en su tarjeta NFC, realiza las comprobaciones necesarias y registra el fichaje en la BBDD con la información necesaria. |
-| **Actores:** empleado, tarjeta personal y lector NFC. |
-| **Precondiciones:** se requiere que el empleado esté registrado en el sistema, su número identificativo personal esté registrado en su tarjeta personal y el lector NFC esté configurado correctamente. |
-| **Curso normal del caso de uso:**<br>1- El empleado acerca su tarjeta personal al lector NFC.<br>2- El lector NFC lee el número identificativo del trabajador.<br>3- El sistema busca dicho número en la BBDD.<br>4- El sistema revisa el último fichaje del empleado para determinar el tipo de fichaje (entrada/salida).<br>5- El sistema registra el fichaje.<br>6- El sistema confirma el fichaje mediante un mensaje. |
-| **Postcondiciones:** el fichaje queda registrado correctamente en la BBDD. |
-| **Alternativa 1:**<br>2.1- La tarjeta no tiene asociado ningún número identificativo.<br>2.2- El sistema informará al empleado que no ha conseguido leer la tarjeta.<br>2.3- Fin del caso de uso. |
-| **Alternativa 2:**<br>3.1- El sistema no localiza el número asociado a la tarjeta pasada.<br>3.2- El sistema informará al empleado que no se ha encontrado dicho número.<br>3.3- Fin del caso de uso. |
-
-<br>
-
-| Caso de uso: Consulta de fichajes por parte de la responsable |
-|-------------------------------------------------------------|
-| ID: CU-2 |
-| **Descripción:** la responsable indica el empleado y los días que quiere consultar los fichajes y el sistema devuelve un informe con todos los fichajes realizados dichos días y una serie de indicadores como las horas teóricas trabajadas, las horas reales y las horas extraordinarias. |
-| **Actores:** responsable. |
-| **Precondiciones:** la responsable debe tener permisos de consulta. |
-| **Curso normal del caso de uso:**<br>1- La responsable accede al módulo con sus credenciales.<br>2- La responsable indica el trabajador sobre el que quiere consultar los fichajes.<br>3- La responsable indica el rango de días sobre los que quiere hacer la consulta.<br>4- El sistema busca los fichajes realizados según los parámetros indicados en los puntos 2 y 3.<br>5- El sistema prepara el informe realizando los cálculos necesarios por cada día consultado.<br>6- El sistema muestra el informe con los datos por pantalla.<br>7- El sistema da opción de generar un documento .xlsx. |
-| **Postcondiciones:** la responsable obtiene el informe solicitado para su control y tratamiento. |
-| **Alternativa 1:**<br>4.1- El sistema no encuentra fichajes.<br>4.2- El sistema informa por pantalla al responsable.<br>4.3- Fin del caso de uso. |
-
-<br>
-
-| Caso de uso: Envío informe semanal al empleado |
-|------------------------------------------------|
-| ID: CU-3 |
-| **Descripción:** semanalmente, se ejecuta un job para que el sistema le remita un informe a cada empleado con las horas efectuadas dicha semana para su revisión. |
-| **Actores:** sistema y empleado. |
-| **Precondiciones:** deben existir fichajes en la semana a enviar el informe y el sistema debe tener registrado el correo electrónico del empleado. |
-| **Curso normal del caso de uso:**<br>1- El sistema ejecuta job semanal.<br>2- El sistema consulta datos empleado por empleado.<br>3- El sistema determina el rango de fechas sobre los que generar el informe.<br>4- El sistema genera informes según los parámetros determinados en los puntos 2 y 3.<br>5- El sistema envía los informes por correo electrónico. |
-| **Postcondiciones:** cada empleado recibe el informe de su jornada laboral de la semana tratada. |
-| **Alternativa 1:**<br>2.1- El sistema no localiza registro de correo electrónico para un empleado.<br>2.2- El sistema informa por correo electrónico al responsable para subsanar esta situación.<br>2.3- Fin del caso de uso. |
-| **Alternativa 2:**<br>4.1- El sistema no encuentra fichajes de un empleado en el rango de fechas indicado.<br>4.2- El sistema notifica la ausencia de registros al empleado por correo electrónico.<br>4.3- Fin del caso de uso. |
-
-<br>
-
-| Caso de uso: Registro manual de un fichaje de empleado |
-|--------------------------------------------------------|
-| ID: CU-4 |
-| **Descripción:** la responsable podrá registrar un fichaje manualmente con la información facilitada por el empleado y validada por ella. |
-| **Actores:** responsable y empleado |
-| **Precondiciones:** la responsable tiene permisos para el registro manual de fichajes de empleados y el empleado esté registrado en el sistema. |
-| **Curso normal del caso de uso:**<br>1- La responsable accede al módulo con sus credenciales.<br>2- La responsable indica el empleado sobre el que quiere registrar el fichaje.<br>3- La responsable indica el día del fichaje.<br>4- La responsable indica la hora del fichaje.<br>5- El sistema determina el tipo de fichaje según la fecha y la hora indicada.<br>6- El sistema registra el fichaje.<br>7- El sistema confirma el fichaje mediante un mensaje. |
-| **Postcondiciones:** el fichaje queda registrado correctamente en la BBDD. |
-| **Alternativa 1:** ninguna. |
+![Diagrama de casos de uso](https://github.com/Seradjor/PFC/blob/main/Images/Diagrama%20de%20casos%20de%20uso.png)
 
 ---
 
