@@ -1,0 +1,307 @@
+<odoo>
+    <data>
+
+        <!-- Fichajes Sergio Adell Jorge -->
+        <!-- 02/02/2026 -->
+        <record id="tt_emp1_001" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">1</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_002" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">2</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp1_003" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">3</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_004" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">4</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">17.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 03/02/2026 -->
+        <record id="tt_emp1_005" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">5</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_006" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">6</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp1_007" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">7</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_008" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">8</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">17.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 04/02/2026 -->
+        <record id="tt_emp1_009" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">9</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_010" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">10</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp1_011" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">11</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_012" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">12</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">17.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 05/02/2026 -->
+        <record id="tt_emp1_013" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">13</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_014" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">14</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp1_015" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">15</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_016" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">16</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">17.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 06/02/2026 -->
+        <record id="tt_emp1_017" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">17</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_018" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">18</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp1_019" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">19</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp1_020" model="time_tracking.record">
+            <field name="employee_id" ref="employee_sergio_adell"/>
+            <field name="record_id">20</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">17.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- Fichajes Sergio Adell Jorge -->
+        <!-- 02/02/2026 -->
+        <record id="tt_emp2_001" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">1</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_002" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">2</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp2_003" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">3</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_004" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">4</field>
+            <field name="date">2026-02-02</field>
+            <field name="time">16.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 03/02/2026 -->
+        <record id="tt_emp2_005" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">5</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_006" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">6</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp2_007" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">7</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_008" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">8</field>
+            <field name="date">2026-02-03</field>
+            <field name="time">16.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 04/02/2026 -->
+        <record id="tt_emp2_009" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">9</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_010" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">10</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp2_011" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">11</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_012" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">12</field>
+            <field name="date">2026-02-04</field>
+            <field name="time">16.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 05/02/2026 -->
+        <record id="tt_emp2_013" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">13</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_014" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">14</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp2_015" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">15</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_016" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">16</field>
+            <field name="date">2026-02-05</field>
+            <field name="time">16.0</field>
+            <field name="type">exit</field>
+        </record>
+
+        <!-- 06/02/2026 -->
+        <record id="tt_emp2_017" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">17</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">8.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_018" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">18</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">14.0</field>
+            <field name="type">exit</field>
+        </record>
+        <record id="tt_emp2_019" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">19</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">15.0</field>
+            <field name="type">entry</field>
+        </record>
+        <record id="tt_emp2_020" model="time_tracking.record">
+            <field name="employee_id" ref="employee_lluch_cuenca"/>
+            <field name="record_id">20</field>
+            <field name="date">2026-02-06</field>
+            <field name="time">16.0</field>
+            <field name="type">exit</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,153 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="time_tracking.list">
+        <field name="name">Fichajes empleados</field>
+        <field name="model">time_tracking.record</field>
+        <field name="arch" type="xml">
+            <tree default_order="date desc, time desc" create="false"> 
+                <field name="employee_id"/>
+                <field name="date"/>
+                <field name="time" widget="float_time"/>
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- form view -->
+    <!-- NO SE GASTA -->
+    <!-- <record model="ir.ui.view" id="time_tracking.form">
+        <field name="name">Fichajes empleados</field>
+        <field name="model">time_tracking.record</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="record_id" readonly="1"/>
+                        <field name="date"/>
+                        <field name="time" widget="float_time"/>
+                        <field name="type"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    -->
+
+    <!-- Consulta búsqueda fichajes -->
+    <record model="ir.ui.view" id="time_tracking.search_records_view">
+        <field name="name">Consulta fichajes</field>
+        <field name="model">time_tracking.records_search</field>
+        <field name="arch" type="xml">
+            <form string="Fichajes empleado" create="false">
+                <sheet>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="date_start" string="Día inicial"/>
+                        <field name="date_end" string="Día final"/>
+                    </group>
+
+                    <footer>
+                        <button string="Aceptar" type="object" name="action_search_records" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- VISTA: REGISTRO MANUAL -->
+    <record model="ir.ui.view" id="time_tracking.manual_tracking">
+        <field name="name">Registro fichaje manual</field>
+        <field name="model">time_tracking.record</field>
+        <field name="arch" type="xml">
+            <form string="Registro fichaje manual" create="false">
+                <sheet>
+                <group>
+                    <field name="employee_id"/>
+                    <field name="date"/>
+                    <field name="time" widget="float_time"/>
+                    <field name="type"/>
+                </group>
+
+                <footer>
+                    <button string="Aceptar" type="object" name="action_save_day" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- VISTA: EDICIÓN DE FICHAJES DEL DÍA -->
+    <record model="ir.ui.view" id="time_tracking.edit_day">
+        <field name="name">Edición fichaje</field>
+        <field name="model">time_tracking.record</field>
+        <field name="arch" type="xml">
+            <form string="Edición fichajes" create="false">
+                <sheet>
+                    <group>
+                        <field name="employee_id" readonly="1"/>
+                        <field name="date" readonly="1"/>
+                    </group>
+
+                    <field name="employee_id" invisible="1"/>
+                    <field name="date" invisible="1"/>
+
+                    <group string="Fichajes del día">
+                        <field name="type"/>
+                        <field name="time" widget="float_time"/>
+                    </group>
+
+                    <footer>
+                        <button string="Guardar" type="object" name="action_save_day"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="time_tracking.action_window_records">
+      <field name="name">Registros de fichaje</field>
+      <field name="res_model">time_tracking.record</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- server action to the one above -->
+    <record model="ir.actions.act_window" id="time_tracking.action_search_records">
+      <field name="name">Consulta fichajes</field>
+      <field name="res_model">time_tracking.records_search</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="time_tracking.search_records_view"/>
+      <field name="target">new</field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="time_tracking.action_manual_tracking">
+      <field name="name">Registro manual</field>
+      <field name="res_model">time_tracking.record</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="time_tracking.manual_tracking"/>
+      <field name="target">new</field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="Fichajes" id="time_tracking.menu_root" />
+
+    <menuitem name="Inicio" id="time_tracking.menu_home" parent="time_tracking.menu_root"/>
+
+    <!-- CAMBIAR ACCIÓN ASOCIADA -->
+    <menuitem name="Informe" id="time_tracking.report" parent="time_tracking.menu_root"
+              action="time_tracking.action_search_records"/>
+
+    <!-- menu categories -->
+    <menuitem name="Visualizar fichaje" id="time_tracking.records_search" parent="time_tracking.menu_home"
+              action="time_tracking.action_search_records"/>
+
+    <menuitem name="Registrar fichaje" id="time_tracking.menu_manual" parent="time_tracking.menu_home"
+              action="time_tracking.action_manual_tracking"/>
+
+  </data>
+</odoo>

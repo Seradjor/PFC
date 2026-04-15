@@ -1,0 +1,17 @@
+<odoo>
+    <data>  
+        <record id="employee_sergio_adell" model="hr.employee">
+            <field name="name">Sergio Adell Jorge</field>
+            <field name="barcode">041442864386</field>
+            <field name="private_phone">687112399</field>
+            <field name="private_email">serjorad@gmail.com</field>
+        </record>
+
+        <record id="employee_lluch_cuenca" model="hr.employee">
+            <field name="name">Mª Lluch Cuenca Bono</field>
+            <field name="barcode">041459228927</field>
+            <field name="private_phone">636849291</field>
+            <field name="private_email">seradjor@gmail.com</field>
+        </record>
+    </data>
+</odoo>
