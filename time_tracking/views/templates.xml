@@ -1,24 +1,104 @@
 <odoo>
     <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
+
+        <template id="report_template">
+
+            <t t-call="web.html_container">
+
+                <xpath expr="//style" position="after">
+                    <link rel="stylesheet" href="/time_tracking/static/src/css/styles.css"/>
+                </xpath>
+
+                <style>
+                    @media print {
+                        .btn-volver {
+                            display: none;
+                        }
+                    }
+                </style>
+
+                <div class="container">
+
+                    <h1>Informe de fichajes</h1>
+
+                    <h2>
+                        Empleado: <t t-out="doc['employee_name']"/>
+                    </h2>
+
+                    <p>
+                        Desde <strong><t t-out="doc['date_start']"/></strong>
+                        hasta <strong><t t-out="doc['date_end']"/></strong>
+                    </p>
+
+                    <a href="javascript:history.back()" class="btn-volver">← Volver </a>
+                    <a href="javascript:window.print()" class="btn-volver"> 🖨 Descargar PDF </a>
+                    <a t-att-href="'/time_tracking/report/csv/%s/%s/%s' % (doc['employee_id'], doc['date_start_csv'], doc['date_end_csv'])"
+                    class="btn-volver">
+                        Descargar CSV
+                    </a>
+
+
+                    <!-- TABLA PRINCIPAL -->
+                    <table class="tabla-fichajes">
+
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Fichajes del día</th>
+                            <th class="centrado">Horas</th>
+                        </tr>
+
+                        <t t-foreach="doc['lines']" t-as="line">
+                            <tr>
+                                <td><t t-out="line['date']"/></td>
+                                <td><t t-out="line['detail']"/></td>
+                                <td class="centrado"><t t-out="line['hours']"/></td>
+                            </tr>
+                        </t>
+
+                    </table>
+
+                <!-- RESUMEN -->
+                    <h3>Resumen</h3>
+
+                    <table class="tabla-resumen">
+
+                        <tr>
+                            <td><strong>Total horas realizadas:</strong></td>
+                            <td class="centrado"><t t-out="doc['total_worked_hours']"/></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Horas esperadas:</strong></td>
+                            <td class="centrado"><t t-out="doc['expected_hours']"/></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Diferencia:</strong></td>
+                            <td class="centrado"><t t-out="doc['hours_difference']"/></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Horas extra:</strong></td>
+                            <td class="centrado"><t t-out="doc['extra_hours']"/></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Horas festivo:</strong></td>
+                            <td class="centrado"><t t-out="doc['holiday_hours']"/></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Valor horas extra/festivo:</strong></td>
+                            <td class="centrado"><t t-out="doc['extra_holiday_value']"/></td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
             </t>
-          </dl>
+
         </template>
--->
+
     </data>
 </odoo>

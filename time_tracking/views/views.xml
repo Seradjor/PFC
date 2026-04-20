@@ -5,7 +5,7 @@
         <field name="name">Fichajes empleados</field>
         <field name="model">time_tracking.record</field>
         <field name="arch" type="xml">
-            <tree default_order="date desc, time desc" create="false"> 
+            <tree default_order="date desc" default_group_by="employee_id" create="false"> 
                 <field name="employee_id"/>
                 <field name="date"/>
                 <field name="time" widget="float_time"/>
@@ -34,6 +34,24 @@
         </field>
     </record>
     -->
+
+    <!--  time_tracking.record -->
+    <record model="ir.ui.view" id="time_tracking.search">
+        <field name="name">Fichajes empleado con filtros y agrupaciones</field>
+        <field name="model">time_tracking.record</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Filtros -->
+                <filter string="Hoy" name="today" domain="[('date', '=', context_today())]"/>
+                <filter string="Esta semana" name="week" domain="[('date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())))]"/>
+
+                <!-- Agrupaciones -->
+                <filter string="Agrupar por empleado" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                <filter string="Agrupar por día" name="group_date" context="{'group_by': 'date'}"/>
+            </search>
+        </field>
+    </record>
+
 
     <!-- Consulta búsqueda fichajes -->
     <record model="ir.ui.view" id="time_tracking.search_records_view">
@@ -114,6 +132,7 @@
       <field name="name">Registros de fichaje</field>
       <field name="res_model">time_tracking.record</field>
       <field name="view_mode">tree,form</field>
+      <field name="search_view_id" ref="time_tracking.search"/>
     </record>
 
     <!-- server action to the one above -->

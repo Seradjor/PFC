@@ -31,6 +31,7 @@
         # Seguridad
         'security/ir.model.access.csv',
         'views/views.xml',
+        'views/templates.xml',
         # Datos de modelos
         'data/employees.xml',
         'data/records.xml',

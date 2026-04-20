@@ -10,7 +10,7 @@ class record(models.Model):
     record_id = fields.Integer(string='ID fichaje', readonly=True)
     barcode = fields.Char(string="Código empleado", store=False)
     date = fields.Date(string='Fecha', required=True)
-    time = fields.Float(string='Hora', required=True)
+    time = fields.Float(string='Hora', group_operator=False, required=True)
     type = fields.Selection([('entry', 'Entrada'),('exit', 'Salida')], string='Tipo', required=True)
 
     # Relación con empleado
