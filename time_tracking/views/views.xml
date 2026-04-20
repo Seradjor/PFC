@@ -110,9 +110,6 @@
                         <field name="date" readonly="1"/>
                     </group>
 
-                    <field name="employee_id" invisible="1"/>
-                    <field name="date" invisible="1"/>
-
                     <group string="Fichajes del día">
                         <field name="type"/>
                         <field name="time" widget="float_time"/>

@@ -35,6 +35,7 @@
         # Datos de modelos
         'data/employees.xml',
         'data/records.xml',
+        'data/cron.xml',
 
     ],
     # only loaded in demonstration mode

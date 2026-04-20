@@ -100,5 +100,40 @@
 
         </template>
 
+        <template id="email_report_template">
+            <div>
+                <h2>Informe de fichajes</h2>
+
+                <p>
+                    Empleado: <t t-out="doc['employee_name']"/>
+                </p>
+
+                <p>
+                    Periodo: <t t-out="doc['date_start']"/> - <t t-out="doc['date_end']"/>
+                </p>
+
+                <table border="1">
+                    <t t-foreach="doc['lines']" t-as="line">
+                        <tr>
+                            <td><t t-out="line['date']"/></td>
+                            <td><t t-out="line['detail']"/></td>
+                            <td><t t-out="line['hours']"/></td>
+                        </tr>
+                    </t>
+                </table>
+
+                <h3>Resumen</h3>
+
+                <table border="1">
+                    <tr><td>Total horas realizadas:</td><td><t t-out="doc['total_worked_hours']"/></td></tr>
+                    <tr><td>Horas esperadas:</td><td><t t-out="doc['expected_hours']"/></td></tr>
+                    <tr><td>Diferencia:</td><td><t t-out="doc['hours_difference']"/></td></tr>
+                    <tr><td>Horas extra:</td><td><t t-out="doc['extra_hours']"/></td></tr>
+                    <tr><td>Horas festivo:</td><td><t t-out="doc['holiday_hours']"/></td></tr>
+                    <tr><td>Valor horas extra/festivo:</td><td><t t-out="doc['extra_holiday_value']"/></td></tr>
+                </table>
+            </div>
+        </template>
+
     </data>
 </odoo>

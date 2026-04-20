@@ -91,15 +91,21 @@ class TimeTracking(http.Controller):
         date_start = datetime.strptime(date_start, "%Y-%m-%d").date()
         date_end = datetime.strptime(date_end, "%Y-%m-%d").date()
 
-        records_search = request.env['time_tracking.records_search'].create({
-            'employee_id': employee.id,
-            'date_start': date_start,
-            'date_end': date_end,
-        })
+        service = self._get_service()
 
         # Obtenemos registros.
-        records = records_search._get_records(employee.id, date_start, date_end)
+        records = service._get_records(employee.id, date_start, date_end)
 
-        lines, summary = records_search._generate_report(records)
+        if not records:
+            raise UserError('Fichajes para el empleado y las fechas indicadas no encontrados.')
+
+        lines, summary = service._generate_report(
+            date_start,
+            date_end,
+            records
+        )
 
         return date_start, date_end, lines, summary
+    
+    def _get_service(self):
+        return request.env['time_tracking.report_service']
