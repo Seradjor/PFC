@@ -1,22 +1,61 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-    <record model="ir.ui.view" id="time_tracking.list">
-        <field name="name">Fichajes empleados</field>
+    <!-- VISTA: LISTA DE FICHAJES -->
+    <record model="ir.ui.view" id="time_tracking_day_list">
+        <field name="name">Fichajes del día</field>
         <field name="model">time_tracking.record</field>
         <field name="arch" type="xml">
-            <tree default_order="date desc" default_group_by="employee_id" create="false"> 
-                <field name="employee_id"/>
-                <field name="date"/>
+            <tree string="Fichajes del día" create="false" editable="top" default_order="date desc"
+                decoration-success="type == 'entry'" decoration-danger="type == 'exit'">
+
+                <field name="employee_id" readonly="1"/>
+                <field name="date" readonly="1"/>
                 <field name="time" widget="float_time"/>
                 <field name="type"/>
+
             </tree>
         </field>
     </record>
 
-    <!-- form view -->
-    <!-- NO SE GASTA -->
-    <!-- <record model="ir.ui.view" id="time_tracking.form">
+    <record model="ir.ui.view" id="time_tracking_records_list">
+        <field name="name">Fichajes empleado</field>
+        <field name="model">time_tracking.record</field>
+        <field name="arch" type="xml">
+            <tree string="Fichajes del día"
+                create="false"
+                editable="top"
+                multi_edit="1"
+                default_order="date desc"
+                decoration-success="type == 'entry'"
+                decoration-danger="type == 'exit'"
+                default_group_by="date:day">
+
+                <header>
+
+                    <button name="action_export_pdf"
+                        type="object"
+                        string="Informe PDF"
+                        class="btn-primary"
+                        display="always"/>
+
+                    <button name="action_export_csv"
+                        type="object"
+                        string="Informe CSV"
+                        class="btn-primary"
+                        display="always"/>
+
+                </header>
+
+                <field name="date" readonly="1"/>
+                <field name="time" widget="float_time"/>
+                <field name="type"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="time_tracking.form">
         <field name="name">Fichajes empleados</field>
         <field name="model">time_tracking.record</field>
         <field name="arch" type="xml">
@@ -33,7 +72,7 @@
             </form>
         </field>
     </record>
-    -->
+
 
     <!--  time_tracking.record -->
     <record model="ir.ui.view" id="time_tracking.search">
@@ -75,6 +114,7 @@
         </field>
     </record>
 
+
     <!-- VISTA: REGISTRO MANUAL -->
     <record model="ir.ui.view" id="time_tracking.manual_tracking">
         <field name="name">Registro fichaje manual</field>
@@ -99,7 +139,7 @@
     </record>
 
     <!-- VISTA: EDICIÓN DE FICHAJES DEL DÍA -->
-    <record model="ir.ui.view" id="time_tracking.edit_day">
+    <record model="ir.ui.view" id="time_tracking_edit_day">
         <field name="name">Edición fichaje</field>
         <field name="model">time_tracking.record</field>
         <field name="arch" type="xml">
@@ -129,6 +169,7 @@
       <field name="name">Registros de fichaje</field>
       <field name="res_model">time_tracking.record</field>
       <field name="view_mode">tree,form</field>
+      <field name="context">{'group_by': ['employee_id', 'date']}</field>
       <field name="search_view_id" ref="time_tracking.search"/>
     </record>
 
@@ -141,7 +182,7 @@
       <field name="target">new</field>
     </record>
     
-    <record model="ir.actions.act_window" id="time_tracking.action_manual_tracking">
+    <record model="ir.actions.act_window" id="action_manual_tracking">
       <field name="name">Registro manual</field>
       <field name="res_model">time_tracking.record</field>
       <field name="view_mode">form</field>
@@ -149,20 +190,24 @@
       <field name="target">new</field>
     </record>
 
+    <record model="ir.actions.act_window" id="time_tracking.action_time_tracking_day">
+        <field name="name">Fichajes del día</field>
+        <field name="res_model">time_tracking.record</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'group_by': ['employee_id', 'date:day']}</field>
+        <field name="view_id" ref="time_tracking.time_tracking_day_list"/>
+    </record>
+
     <!-- Top menu item -->
-    <menuitem name="Fichajes" id="time_tracking.menu_root" />
+    <menuitem name="Fichajes" id="time_tracking.menu_root" action="time_tracking.action_window_records"/>
 
     <menuitem name="Inicio" id="time_tracking.menu_home" parent="time_tracking.menu_root"/>
 
-    <!-- CAMBIAR ACCIÓN ASOCIADA -->
-    <menuitem name="Informe" id="time_tracking.report" parent="time_tracking.menu_root"
-              action="time_tracking.action_search_records"/>
-
     <!-- menu categories -->
-    <menuitem name="Visualizar fichaje" id="time_tracking.records_search" parent="time_tracking.menu_home"
+    <menuitem name="Consulta fichajes" id="time_tracking.records_search" parent="time_tracking.menu_home"
               action="time_tracking.action_search_records"/>
 
-    <menuitem name="Registrar fichaje" id="time_tracking.menu_manual" parent="time_tracking.menu_home"
+    <menuitem name="Nuevo fichaje" id="time_tracking.menu_manual" parent="time_tracking.menu_home"
               action="time_tracking.action_manual_tracking"/>
 
   </data>

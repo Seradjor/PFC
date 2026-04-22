@@ -50,6 +50,7 @@ class report_service(models.Model):
             # Añadimos la línea del día.
             lines.append({
                 'date': day.strftime(constants.FORMATO_FECHA), # Formateo la fecha a tipo String y le doy el formato deseado.
+                'date_url': day.strftime("%Y-%m-%d"), # Para usar en el controller en las http.route.
                 'detail': detail,
                 'hours': worked_hours_day,
             })

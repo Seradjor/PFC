@@ -86,6 +86,44 @@ class TimeTracking(http.Controller):
             ]
         )
 
+    @http.route('/time_tracking/edit_day/<model("hr.employee"):employee>/<string:date>', type='http', auth='user')
+    def edit_day(self, employee, date):
+
+        date_formatted = datetime.strptime(date, "%Y-%m-%d").date()
+
+        records = self.get_records_day(employee, date_formatted)
+
+        if not records:
+            raise UserError("No hay fichajes para este día.")
+
+        # Tomamos cualquier registro del día (todos comparten employee/date)
+        record = records[0]
+
+        # Ejecutamos el método del modelo
+        action = record.action_open_edit_day()
+
+        # Obtenemos el ID de la acción
+        action_id = request.env['ir.actions.act_window'].create(action).id
+
+        # Redirigimos al webclient para ejecutar la acción
+        url = f"/web#action={action_id}"
+
+        return request.redirect(url)
+
+
+    @http.route('/time_tracking/delete_day/<model("hr.employee"):employee>/<string:date>', type='http', auth='user')
+    def delete_day(self, employee, date): 
+        
+        date_formatted = datetime.strptime(date, "%Y-%m-%d").date() 
+        
+        records = self.get_records_day(employee, date_formatted) 
+        
+        records.unlink() 
+        
+        # Volver al informe original 
+        return request.redirect(request.httprequest.referrer or '/')
+
+
     def _get_report_data(self, employee, date_start, date_end):
 
         date_start = datetime.strptime(date_start, "%Y-%m-%d").date()

@@ -2,4 +2,3 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_time_tracking_record,time_tracking.record,model_time_tracking_record,base.group_user,1,1,1,1
 access_time_tracking_records_search,time_tracking.records_search,model_time_tracking_records_search,base.group_user,1,1,1,1
 access_time_tracking_report_service,time_tracking.report_service,model_time_tracking_report_service,base.group_user,1,1,1,1
-

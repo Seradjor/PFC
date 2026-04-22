@@ -42,5 +42,11 @@
     'demo': [
         'demo/demo.xml',
     ],
-}
 
+    'assets': {
+    'time_tracking.assets_day_list': [
+        '/time_tracking/static/src/css/styles.css',
+    ],
+},
+
+}
