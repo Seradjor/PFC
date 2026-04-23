@@ -1,20 +1,37 @@
 <odoo>
     <data>
 
-        <template id="report_template">
+        <template id="report_template_pdf">
 
             <t t-call="web.html_container">
 
-                <xpath expr="//style" position="after">
-                    <link rel="stylesheet" href="/time_tracking/static/src/css/styles.css"/>
-                </xpath>
-
                 <style>
-                    @media print {
-                        .btn-volver {
-                            display: none;
-                        }
+
+                    .container {
+                        max-width: 900px;
+                        margin: auto;
+                        font-size: 14px;
                     }
+
+                    /* --- TABLAS DEL INFORME --- */
+                    .tabla_fichajes,
+                    .tabla_resumen {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                    }
+
+                    .tabla_fichajes th,
+                    .tabla_fichajes td,
+                    .tabla_resumen td {
+                        border: 1px solid #ccc;
+                        padding: 8px;
+                    }
+
+                    .tabla_fichajes th {
+                        background-color: #f0f0f0;
+                    }
+
                 </style>
 
                 <div class="container">
@@ -22,74 +39,65 @@
                     <h1>Informe de fichajes</h1>
 
                     <h2>
-                        Empleado: <t t-out="doc['employee_name']"/>
+                        Empleado:
+                        <t t-out="employee_name"/>
                     </h2>
 
                     <p>
-                        Desde <strong><t t-out="doc['date_start']"/></strong>
-                        hasta <strong><t t-out="doc['date_end']"/></strong>
+                        Desde <strong><t t-out="date_start"/></strong>
+                        hasta <strong><t t-out="date_end"/></strong>
                     </p>
 
-                    <a href="javascript:history.back()" class="btn-volver">← Volver </a>
-                    <a href="javascript:window.print()" class="btn-volver"> 🖨 Descargar PDF </a>
-                    <a t-att-href="'/time_tracking/report/csv/%s/%s/%s' % (doc['employee_id'], doc['date_start_csv'], doc['date_end_csv'])"
-                    class="btn-volver">
-                        Descargar CSV
-                    </a>
+                    <table class="tabla_fichajes">
 
-
-                    <!-- TABLA PRINCIPAL -->
-                    <table class="tabla-fichajes">
-
-                        <tr>
+                        <tr style="font-size: 20;">
                             <th>Fecha</th>
-                            <th>Fichajes del día</th>
-                            <th class="centrado">Horas</th>
+                            <th>Detalle</th>
+                            <th>Horas</th>
                         </tr>
 
-                        <t t-foreach="doc['lines']" t-as="line">
+                        <t t-foreach="lines" t-as="line">
                             <tr>
                                 <td><t t-out="line['date']"/></td>
                                 <td><t t-out="line['detail']"/></td>
-                                <td class="centrado"><t t-out="line['hours']"/></td>
+                                <td><t t-out="line['hours']"/></td>
                             </tr>
                         </t>
 
                     </table>
 
-                <!-- RESUMEN -->
                     <h3>Resumen</h3>
 
-                    <table class="tabla-resumen">
+                    <table class="tabla_resumen">
 
                         <tr>
-                            <td><strong>Total horas realizadas:</strong></td>
-                            <td class="centrado"><t t-out="doc['total_worked_hours']"/></td>
+                            <td>Total horas</td>
+                            <td><t t-out="total_worked_hours"/></td>
                         </tr>
 
                         <tr>
-                            <td><strong>Horas esperadas:</strong></td>
-                            <td class="centrado"><t t-out="doc['expected_hours']"/></td>
+                            <td>Esperadas</td>
+                            <td><t t-out="expected_hours"/></td>
                         </tr>
 
                         <tr>
-                            <td><strong>Diferencia:</strong></td>
-                            <td class="centrado"><t t-out="doc['hours_difference']"/></td>
+                            <td>Diferencia</td>
+                            <td><t t-out="hours_difference"/></td>
                         </tr>
 
                         <tr>
-                            <td><strong>Horas extra:</strong></td>
-                            <td class="centrado"><t t-out="doc['extra_hours']"/></td>
+                            <td>Extra</td>
+                            <td><t t-out="extra_hours"/></td>
                         </tr>
 
                         <tr>
-                            <td><strong>Horas festivo:</strong></td>
-                            <td class="centrado"><t t-out="doc['holiday_hours']"/></td>
+                            <td>Festivo</td>
+                            <td><t t-out="holiday_hours"/></td>
                         </tr>
 
                         <tr>
-                            <td><strong>Valor horas extra/festivo:</strong></td>
-                            <td class="centrado"><t t-out="doc['extra_holiday_value']"/></td>
+                            <td>Valor</td>
+                            <td><t t-out="extra_holiday_value"/></td>
                         </tr>
 
                     </table>

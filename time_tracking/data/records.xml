@@ -9,6 +9,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">9.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_002" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -16,6 +17,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">5.0</field>
         </record>
         <record id="tt_emp1_003" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -23,6 +25,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_004" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -30,6 +33,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 14/04/2026 -->
@@ -39,6 +43,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">9.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_006" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -46,6 +51,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">5.0</field>
         </record>
         <record id="tt_emp1_007" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -53,6 +59,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_008" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -60,6 +67,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 15/04/2026 -->
@@ -69,6 +77,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">9.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_010" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -76,6 +85,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">5.0</field>
         </record>
         <record id="tt_emp1_011" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -83,6 +93,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_012" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -90,6 +101,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 16/04/2026 -->
@@ -99,6 +111,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">9.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_014" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -106,6 +119,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">5.0</field>
         </record>
         <record id="tt_emp1_015" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -113,6 +127,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_016" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -120,6 +135,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 17/04/2026 -->
@@ -129,6 +145,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">9.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_018" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -136,6 +153,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">5.0</field>
         </record>
         <record id="tt_emp1_019" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -143,6 +161,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_020" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -150,6 +169,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 18/04/2026 -->
@@ -159,6 +179,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">9.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_022" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -166,6 +187,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">5.0</field>
         </record>
         <record id="tt_emp1_023" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -173,6 +195,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp1_024" model="time_tracking.record">
             <field name="employee_id" ref="employee_sergio_adell"/>
@@ -180,6 +203,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- Mª Lluch Cuenca Bono -->
@@ -190,6 +214,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">10.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_002" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -197,6 +222,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">4.0</field>
         </record>
         <record id="tt_emp2_003" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -204,6 +230,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_004" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -211,6 +238,7 @@
             <field name="date">2026-04-13</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 14/04/2026 -->
@@ -220,6 +248,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">10.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_006" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -227,6 +256,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">4.0</field>
         </record>
         <record id="tt_emp2_007" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -234,6 +264,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_008" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -241,6 +272,7 @@
             <field name="date">2026-04-14</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 15/04/2026 -->
@@ -250,6 +282,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">10.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_010" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -257,6 +290,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">4.0</field>
         </record>
         <record id="tt_emp2_011" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -264,6 +298,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_012" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -271,6 +306,7 @@
             <field name="date">2026-04-15</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 16/04/2026 -->
@@ -280,6 +316,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">10.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_014" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -287,6 +324,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">4.0</field>
         </record>
         <record id="tt_emp2_015" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -294,6 +332,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_016" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -301,6 +340,7 @@
             <field name="date">2026-04-16</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 17/04/2026 -->
@@ -310,6 +350,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">10.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_018" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -317,6 +358,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">4.0</field>
         </record>
         <record id="tt_emp2_019" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -324,6 +366,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_020" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -331,6 +374,7 @@
             <field name="date">2026-04-17</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
         <!-- 18/04/2026 -->
@@ -340,6 +384,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">10.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_022" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -347,6 +392,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">14.0</field>
             <field name="type">exit</field>
+            <field name="duration">4.0</field>
         </record>
         <record id="tt_emp2_023" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -354,6 +400,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">15.0</field>
             <field name="type">entry</field>
+            <field name="duration">0.0</field>
         </record>
         <record id="tt_emp2_024" model="time_tracking.record">
             <field name="employee_id" ref="employee_lluch_cuenca"/>
@@ -361,6 +408,7 @@
             <field name="date">2026-04-18</field>
             <field name="time">17.0</field>
             <field name="type">exit</field>
+            <field name="duration">2.0</field>
         </record>
 
 

@@ -13,6 +13,7 @@
                 <field name="date" readonly="1"/>
                 <field name="time" widget="float_time"/>
                 <field name="type"/>
+                <field name="duration" readonly="1"/>
 
             </tree>
         </field>
@@ -28,8 +29,7 @@
                 multi_edit="1"
                 default_order="date desc"
                 decoration-success="type == 'entry'"
-                decoration-danger="type == 'exit'"
-                default_group_by="date:day">
+                decoration-danger="type == 'exit'">
 
                 <header>
 
@@ -45,11 +45,18 @@
                         class="btn-primary"
                         display="always"/>
 
+                    <button name="action_send_email"
+                        type="object"
+                        string="Enviar email"
+                        class="btn-primary"
+                        display="always"/>
+
                 </header>
 
                 <field name="date" readonly="1"/>
                 <field name="time" widget="float_time"/>
                 <field name="type"/>
+                <field name="duration" readonly="1"/>
 
             </tree>
         </field>
@@ -164,12 +171,18 @@
         </field>
     </record>
 
+    <record id="action_report_time_tracking" model="ir.actions.report">
+        <field name="name">Informe de fichajes</field>
+        <field name="model">time_tracking.record</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">time_tracking.report_template_pdf</field>
+    </record>
+
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="time_tracking.action_window_records">
       <field name="name">Registros de fichaje</field>
       <field name="res_model">time_tracking.record</field>
       <field name="view_mode">tree,form</field>
-      <field name="context">{'group_by': ['employee_id', 'date']}</field>
       <field name="search_view_id" ref="time_tracking.search"/>
     </record>
 
@@ -194,7 +207,6 @@
         <field name="name">Fichajes del día</field>
         <field name="res_model">time_tracking.record</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'group_by': ['employee_id', 'date:day']}</field>
         <field name="view_id" ref="time_tracking.time_tracking_day_list"/>
     </record>
 

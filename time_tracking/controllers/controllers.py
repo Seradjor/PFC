@@ -8,32 +8,6 @@ from io import StringIO
 
 
 class TimeTracking(http.Controller):
-    @http.route('/time_tracking/report/<model("hr.employee"):employee>/<string:date_start>/<string:date_end>',type='http', auth='user', website=True)
-    def time_tracking_report(self, employee, date_start, date_end):
-
-        # Otenemos datos a mostrar en informe.
-        date_start, date_end, lines, summary = self._get_report_data(employee, date_start, date_end)
-
-        # Datos a enviar al template.
-        data = {
-            'employee_name': employee.name,
-            'employee_id': employee.id,
-            'date_start': date_start.strftime("%d/%m/%Y"),
-            'date_end': date_end.strftime("%d/%m/%Y"),
-            'date_start_csv': date_start.strftime("%Y-%m-%d"),
-            'date_end_csv': date_end.strftime("%Y-%m-%d"),
-            'lines': lines,
-            'total_worked_hours': summary['total_worked_hours'],
-            'expected_hours': summary['expected_hours'],
-            'hours_difference': summary['hours_difference'],
-            'extra_hours': summary['extra_hours'],
-            'holiday_hours': summary['holiday_hours'],
-            'extra_holiday_value': summary['extra_holiday_value'],
-        }
-
-        return request.render('time_tracking.report_template', {'doc': data})
-
-
     @http.route('/time_tracking/report/csv/<model("hr.employee"):employee>/<string:date_start>/<string:date_end>', type='http', auth='user')
     def time_tracking_report_csv(self, employee, date_start, date_end):
 
@@ -85,43 +59,6 @@ class TimeTracking(http.Controller):
                 ('Content-Disposition', f'attachment; filename="informe_fichajes_{employee.name}.csv"')
             ]
         )
-
-    @http.route('/time_tracking/edit_day/<model("hr.employee"):employee>/<string:date>', type='http', auth='user')
-    def edit_day(self, employee, date):
-
-        date_formatted = datetime.strptime(date, "%Y-%m-%d").date()
-
-        records = self.get_records_day(employee, date_formatted)
-
-        if not records:
-            raise UserError("No hay fichajes para este día.")
-
-        # Tomamos cualquier registro del día (todos comparten employee/date)
-        record = records[0]
-
-        # Ejecutamos el método del modelo
-        action = record.action_open_edit_day()
-
-        # Obtenemos el ID de la acción
-        action_id = request.env['ir.actions.act_window'].create(action).id
-
-        # Redirigimos al webclient para ejecutar la acción
-        url = f"/web#action={action_id}"
-
-        return request.redirect(url)
-
-
-    @http.route('/time_tracking/delete_day/<model("hr.employee"):employee>/<string:date>', type='http', auth='user')
-    def delete_day(self, employee, date): 
-        
-        date_formatted = datetime.strptime(date, "%Y-%m-%d").date() 
-        
-        records = self.get_records_day(employee, date_formatted) 
-        
-        records.unlink() 
-        
-        # Volver al informe original 
-        return request.redirect(request.httprequest.referrer or '/')
 
 
     def _get_report_data(self, employee, date_start, date_end):

@@ -1,7 +1,7 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from ..utils import constants
 from datetime import timedelta
-
 
 class records_search(models.TransientModel):
     _name = 'time_tracking.records_search'
@@ -14,7 +14,17 @@ class records_search(models.TransientModel):
     employee_id = fields.Many2one('hr.employee', string='Empleado',required=True)
 
     def action_search_records(self):
+
         self.ensure_one()
+
+        records = self.env['time_tracking.record'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date', '>=', self.date_start),
+            ('date', '<=', self.date_end),
+        ])
+
+        if not records:
+            raise UserError('Fichajes para el empleado y las fechas indicadas no encontrados.')
 
         return {
             'type': 'ir.actions.act_window',
@@ -30,7 +40,12 @@ class records_search(models.TransientModel):
                 ('date', '>=', self.date_start),
                 ('date', '<=', self.date_end),
             ],
-            'context': {'group_by': ['date:day']},
+            'context': {
+                'employee_id': self.employee_id.id,
+                'date_start': self.date_start,
+                'date_end': self.date_end,
+                'group_by': ['date:day'],
+            },
         }
 
 

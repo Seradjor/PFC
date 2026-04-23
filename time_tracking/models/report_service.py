@@ -86,7 +86,6 @@ class report_service(models.Model):
         detail_parts = []
         break_time = False
         worked_hours = 0.0
-        entry_hour = None
 
         # Ordenamos por hora
         day_records = sorted(day_records, key=lambda day_record: day_record.time or 0.0)
@@ -99,19 +98,15 @@ class report_service(models.Model):
                 break_time = True
                 detail_parts.append(f"- Hora salida: {hour_str} ")
 
-                if entry_hour is not None:
-                    worked_hours += max(0.0, hour_float - entry_hour)
-                    entry_hour = None
-
             elif day_record.type == 'entry' and break_time:
                 break_time = False
                 detail_parts.append(f"/ Hora entrada: {hour_str} ")
-                entry_hour = hour_float
 
             else:
                 break_time = False
                 detail_parts.append(f"Hora entrada: {hour_str} ")
-                entry_hour = hour_float
+
+            worked_hours += day_record.duration
 
         return worked_hours, "".join(detail_parts)
 
