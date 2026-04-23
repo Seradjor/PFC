@@ -13,7 +13,7 @@ class record(models.Model):
     date = fields.Date(string='Fecha', required=True)
     time = fields.Float(string='Hora', group_operator=False, required=True)
     type = fields.Selection([('entry', 'Entrada'),('exit', 'Salida')], string='Tipo', required=True)
-    duration = fields.Float(string='Duración', store=True)
+    duration = fields.Float(string='Duración', compute="_compute_duration", store=True)
 
     # Relación con empleado
     employee_id = fields.Many2one('hr.employee', string='Empleado',required=True)
@@ -49,9 +49,6 @@ class record(models.Model):
         if not vals.get('type'):
             vals['type'] = self._calculate_type(employee_id, vals['date'], vals['time'])
 
-        # Calculamos la duración del tiempo trabajado, en caso de ser una salida.
-        vals['duration'] = self._calculate_duration(employee_id, vals['date'], vals['time'], vals['type'])
-
         # Evitar duplicados (employee_id + record_id)
         exists = self.search([
             ('employee_id', '=', employee_id),
@@ -60,33 +57,9 @@ class record(models.Model):
 
         if exists:
             raise ValueError(f"El fichaje {vals['record_id']} ya existe para el empleado {employee_id}")
-
-        record = super().create(vals)
-
-        # Recalcular día completo
-        record._recompute_day(record.employee_id.id, record.date)
-
-        return record
+        
+        return super().create(vals)
     
-
-    def write(self, vals):
-
-        # Si viene de _recompute_day, no recalcular otra vez
-        if self.env.context.get('skip_recompute'):
-            return super().write(vals)
-
-        result = super().write(vals)
-
-        # Recalcular día completo
-        for record in self:
-            record._recompute_day(record.employee_id.id, record.date)
-
-        # Añadimos un flag al contexto para que el JS refresque la vista
-        self.env.context = dict(self.env.context, force_reload=True)
-
-        return result  
-
-
     
     def _calculate_type(self, employee_id, date, time):
 
@@ -98,26 +71,25 @@ class record(models.Model):
             return 'entry'
         
 
-        
-    def _calculate_duration(self, employee_id, date, time, type):
+    @api.depends('employee_id', 'date', 'time', 'type')
+    def _compute_duration(self):
 
-        # Buscar el registro anterior en el tiempo
-        previous_record = self._get_previous_record(employee_id, date, time)
+        for record in self:
+            if not record.employee_id or not record.date:
+                record.duration = 0.0
+                continue
 
-        if previous_record and previous_record.type == 'entry' and type == 'exit':
-            return max(0.0, time - previous_record.time)
-        else:
-            return 0.0
-        
+            day_records = self._get_day_records(record.employee_id.id, record.date)
 
-    def _recompute_day(self, employee_id, date):
+            previous_record = None
 
-        day_records = self._get_day_records(employee_id, date)
+            for day_record in day_records:
+                if previous_record and previous_record.type == 'entry' and day_record.type == 'exit':
+                    day_record.duration = max(0.0, day_record.time - previous_record.time)
+                else:
+                    day_record.duration = 0.0
+                previous_record = day_record
 
-        for record in day_records:
-            duration = self._calculate_duration(record.employee_id.id, record.date, record.time, record.type)
-            record.with_context(skip_recompute=True).write({'duration': duration})
-        
 
 
     def _get_employee_from_barcode(self, barcode):
