@@ -1,0 +1,7 @@
+<odoo>
+    <record id="group_time_tracking_nfc" model="res.groups">
+        <field name="name">NFC Reader</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="comment">Grupo para el lector NFC con permisos mínimos</field>
+    </record>
+</odoo>
