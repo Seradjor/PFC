@@ -33,6 +33,7 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/hr_employee_views.xml',
         # Datos de modelos
         'data/employees.xml',
         'data/records.xml',

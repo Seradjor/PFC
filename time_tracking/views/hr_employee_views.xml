@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_employee_form_inherit_time_tracking">
+            <field name="name">hr.employee.form.time.tracking</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Insertamos una nueva pestaña al final del notebook -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Fichajes">
+                        <group>
+                            <field name="id_time_tracking"/>
+                        </group>
+
+                        <group>
+                            <field name="records_ids" mode="tree" nolabel="4">
+                                <tree string="Fichajes" create="false" edit="false" delete="false">
+                                    <field name="date"/>
+                                    <field name="time" widget="float_time"/>
+                                    <field name="type"/>
+                                    <field name="duration"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="time_tracking_employee_records">
+            <field name="name">Fichajes empleado</field>
+            <field name="model">time_tracking.record</field>
+            <field name="arch" type="xml">
+                <tree string="Fichajes" create="false" edit="false">
+                    <field name="date"/>
+                    <field name="time" widget="float_time"/>
+                    <field name="type"/>
+                    <field name="duration"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

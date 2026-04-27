@@ -9,7 +9,7 @@ class record(models.Model):
     _rec_name = 'record_id'
 
     record_id = fields.Integer(string='ID fichaje', readonly=True)
-    barcode = fields.Char(string="Código empleado", store=False)
+    id_time_tracking = fields.Char(string="ID empleado", store=False)
     date = fields.Date(string='Fecha', required=True)
     time = fields.Float(string='Hora', group_operator=False, required=True)
     type = fields.Selection([('entry', 'Entrada'),('exit', 'Salida')], string='Tipo', required=True)
@@ -20,18 +20,18 @@ class record(models.Model):
 
     @api.model
     def create(self, vals):
-        # Obtener el barcode
-        barcode = vals.get('barcode')
+        # Obtener el id_time_tracking
+        id_time_tracking = vals.get('id_time_tracking')
 
-        if barcode:
-            # Buscar el empleado por barcode
-            employee = self.env['hr.employee'].search([('barcode', '=', barcode)], limit=1)
+        if id_time_tracking:
+            # Buscar el empleado por id_time_tracking
+            employee = self.env['hr.employee'].search([('id_time_tracking', '=', id_time_tracking)], limit=1)
             if not employee:
-                raise ValueError(f"No existe ningún empleado con el código {barcode}")
+                raise ValueError(f"No existe ningún empleado con el ID {id_time_tracking}")
 
-            # Sustituir barcode por employee_id
+            # Sustituir id_time_tracking por employee_id al tratarse de un campo temporal.
             vals['employee_id'] = employee.id
-            vals.pop('barcode', None)
+            vals.pop('id_time_tracking', None)
 
         # Obtener el empleado
         employee_id = vals.get('employee_id')
@@ -92,8 +92,8 @@ class record(models.Model):
 
 
 
-    def _get_employee_from_barcode(self, barcode):
-        employee = self.env['hr.employee'].search([('barcode', '=', barcode)], limit=1)
+    def _get_employee_from_id_time_tracking(self, id_time_tracking):
+        employee = self.env['hr.employee'].search([('id_time_tracking', '=', id_time_tracking)], limit=1)
         return employee
     
 
@@ -158,14 +158,14 @@ class record(models.Model):
         
 
     @api.model
-    def nfc_register(self, barcode):
+    def nfc_register(self, id_time_tracking):
 
         try:
             import logging
             _logger = logging.getLogger(__name__)
 
-            # Buscamos empleado por barcode
-            employee = self.env['hr.employee'].search([('barcode', '=', barcode)], limit=1)
+            # Buscamos empleado por id_time_tracking
+            employee = self.env['hr.employee'].search([('id_time_tracking', '=', id_time_tracking)], limit=1)
 
             if not employee:
                 return {
