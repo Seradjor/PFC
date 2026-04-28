@@ -20,19 +20,6 @@ class record(models.Model):
 
     @api.model
     def create(self, vals):
-        # Obtener el id_time_tracking
-        id_time_tracking = vals.get('id_time_tracking')
-
-        if id_time_tracking:
-            # Buscar el empleado por id_time_tracking
-            employee = self.env['hr.employee'].search([('id_time_tracking', '=', id_time_tracking)], limit=1)
-            if not employee:
-                raise ValueError(f"No existe ningún empleado con el ID {id_time_tracking}")
-
-            # Sustituir id_time_tracking por employee_id al tratarse de un campo temporal.
-            vals['employee_id'] = employee.id
-            vals.pop('id_time_tracking', None)
-
         # Obtener el empleado
         employee_id = vals.get('employee_id')
 
@@ -48,17 +35,23 @@ class record(models.Model):
         # Autodetectar tipo (Entry/Exit) si no viene informado
         if not vals.get('type'):
             vals['type'] = self._calculate_type(employee_id, vals['date'], vals['time'])
-
-        # Evitar duplicados (employee_id + record_id)
-        exists = self.search([
-            ('employee_id', '=', employee_id),
-            ('record_id', '=', vals['record_id'])
-        ], limit=1)
-
-        if exists:
-            raise ValueError(f"El fichaje {vals['record_id']} ya existe para el empleado {employee_id}")
         
         return super().create(vals)
+    
+
+    def _get_next_record_id(self, employee_id):
+        next_record_id = 1
+
+        last_record = self.search(
+            [('employee_id', '=', employee_id)],
+            order='record_id desc',
+            limit=1
+        )
+
+        if last_record:
+            next_record_id = (last_record.record_id + 1)
+
+        return next_record_id
     
     
     def _calculate_type(self, employee_id, date, time):
@@ -70,15 +63,26 @@ class record(models.Model):
         else:
             return 'entry'
         
+    
+    def _get_previous_record(self, employee_id, date, time):
+
+        previous_record = self.search(
+            [
+                ('employee_id', '=', employee_id),
+                ('date', '=', date),
+                ('time', '<', time)
+            ],
+            order='time desc',
+            limit=1
+        )
+
+        return previous_record
+        
 
     @api.depends('employee_id', 'date', 'time', 'type')
     def _compute_duration(self):
 
         for record in self:
-            if not record.employee_id or not record.date:
-                record.duration = 0.0
-                continue
-
             day_records = self._get_day_records(record.employee_id.id, record.date)
 
             previous_record = None
@@ -91,12 +95,6 @@ class record(models.Model):
                 previous_record = day_record
 
 
-
-    def _get_employee_from_id_time_tracking(self, id_time_tracking):
-        employee = self.env['hr.employee'].search([('id_time_tracking', '=', id_time_tracking)], limit=1)
-        return employee
-    
-
     def _get_day_records(self, employee_id, date):
         day_records = self.search(
             [
@@ -107,55 +105,7 @@ class record(models.Model):
         )
 
         return day_records
-    
-    
-
-    def _get_previous_record(self, employee_id, date, time):
-        # Buscar el registro anterior en el tiempo
-        previous_record = self.search(
-            [
-                ('employee_id', '=', employee_id),
-                ('date', '=', date),
-                ('time', '<', time)
-            ],
-            order='time desc',
-            limit=1
-        )
-
-        return previous_record
-    
-
-    def _get_next_record_id(self, employee_id):
-        last_record = self.search(
-            [('employee_id', '=', employee_id)],
-            order='record_id desc',
-            limit=1
-        )
-        return (last_record.record_id + 1) if last_record else 1
-    
-    
-
-    def _get_current_datetime(self):
-        now = datetime.now()
-        return now.date(), (now.hour + 2) + now.minute / 60 + now.second / 3600 # Sumamos 2 horas para ajustar a hora real.
-    
-
-    def _get_record_type(self, employee_id, date):
-
-        last_today = self.search(
-            [
-                ('employee_id', '=', employee_id),
-                ('date', '=', date)
-            ],
-            order='time desc',
-            limit=1
-        )
-
-        if last_today and last_today.type == 'entry':
-            return 'exit'
-        else:
-            return 'entry'
-        
+      
 
     @api.model
     def nfc_register(self, id_time_tracking):
@@ -196,7 +146,8 @@ class record(models.Model):
                 'message': 'Ha ocurrido un error al registrar el fichaje.'
             }
     
-    
+
+
     # Obtenemos datos de la consulta de fichajes para las acciones posteriores de los botones de la consulta.
     def _get_context(self):
         context = self.env.context

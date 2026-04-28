@@ -5,6 +5,8 @@
 
             <t t-call="web.html_container">
 
+                <meta charset="UTF-8"/>
+
                 <style>
 
                     .container {
@@ -117,7 +119,7 @@
                 </p>
 
                 <p>
-                    Periodo: <t t-out="doc['date_start']"/> - <t t-out="doc['date_end']"/>
+                    Semana: <t t-out="doc['date_start']"/> - <t t-out="doc['date_end']"/>
                 </p>
 
                 <table border="1">
@@ -140,6 +142,38 @@
                     <tr><td>Horas festivo:</td><td><t t-out="doc['holiday_hours']"/></td></tr>
                     <tr><td>Valor horas extra/festivo:</td><td><t t-out="doc['extra_holiday_value']"/></td></tr>
                 </table>
+            </div>
+        </template>
+
+        <template id="email_report_template_no_records">
+            <div>
+                <h2>Informe de fichajes</h2>
+
+                <p>
+                    Empleado: <t t-out="doc['employee_name']"/>
+                </p>
+
+                <p>
+                    Semana: <t t-out="doc['date_start']"/> - <t t-out="doc['date_end']"/>
+                </p>
+
+                <p>
+                    No se han realizado fichajes en el período señalado.
+                </p>
+
+            </div>
+        </template>
+
+
+        <template id="email_report_template_no_email_info">
+            <div>
+                <h2>Informe de fichajes</h2>
+
+                <p>
+                    No se ha podido enviar el informe semanal a <t t-out="doc['employee_name']"/> debido a un problema 
+                    con la dirección electrónica registrada en el sistema.
+                </p>
+
             </div>
         </template>
 

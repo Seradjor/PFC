@@ -1,5 +1,8 @@
 from datetime import date
 
+# Info admin
+EMAIL_ADMIN = "seradjor@gmail.com"
+
 # Duración de la jornada laboral (en horas)
 DURACION_JORNADA = 6
 

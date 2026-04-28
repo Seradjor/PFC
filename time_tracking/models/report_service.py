@@ -127,9 +127,10 @@ class report_service(models.Model):
 
         for employee in employees:
             try:
-                if employee.private_email:
+                if employee.name != "Administrator":
                     self.send_employee_report(employee, start_date, end_date)
                     _logger.info(f"Email enviado a {employee.private_email}")
+                
 
             except Exception as e:
                 _logger.exception("Error enviando informe a %s", employee.name)
@@ -137,12 +138,11 @@ class report_service(models.Model):
     
     def send_employee_report(self, employee, date_start, date_end):
 
+        email_to = employee.private_email
+
         records = self._get_records(employee.id, date_start, date_end)
 
         _logger.info("Empleado %s - registros: %s", employee.name, len(records))
-
-        if not records:
-            return
 
         lines, summary = self._generate_report(date_start, date_end, records)
 
@@ -164,10 +164,36 @@ class report_service(models.Model):
             }
         )
 
+        if not records:
+            html = self.env['ir.ui.view']._render_template(
+                'time_tracking.email_report_template_no_records',
+                {
+                    'doc': {
+                        'employee_name': employee.name,
+                        'date_start': date_start.strftime("%d/%m/%Y"),
+                        'date_end': date_end.strftime("%d/%m/%Y"),
+                    }
+                }
+            )
+            
+        if not employee.private_email:
+            html = self.env['ir.ui.view']._render_template(
+                'time_tracking.email_report_template_no_email_info',
+                {
+                    'doc': {
+                        'employee_name': employee.name,
+                    }
+                }
+            )   
+
+
+        if not email_to:
+            email_to = constants.EMAIL_ADMIN
+
         mail = self.env['mail.mail'].create({
             'subject': f'Informe fichajes {date_start} - {date_end}',
             'email_from': formataddr(('SuperDAM, S.L.', 'no_reply@superdam.es')),
-            'email_to': employee.private_email,
+            'email_to': email_to,
             'body_html': html,
         })
 

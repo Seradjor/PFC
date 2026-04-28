@@ -9,7 +9,7 @@
         </record>
 
         <record id="employee_lluch_cuenca" model="hr.employee">
-            <field name="name">Mª Lluch Cuenca Bono</field>
+            <field name="name">María Lluch Cuenca Bono</field>
             <field name="id_time_tracking">041459228927</field>
             <field name="private_phone">636849291</field>
             <field name="private_email">seradjor@gmail.com</field>
