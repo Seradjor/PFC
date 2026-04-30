@@ -25,6 +25,6 @@ FESTIVOS_2026 = {
     date(2026, 12, 25)
 }
 
-# Formatos 
-FORMATO_FECHA = "%d/%m/%Y"
-FORMATO_HORA = "%H:%M"
+# Formatos
+FORMATO_FECHA_INFORME = "%d/%m/%Y"
+FORMATO_FECHA_DATE = "%Y-%m-%d"

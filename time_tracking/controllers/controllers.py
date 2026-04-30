@@ -3,6 +3,7 @@ from odoo import http
 from odoo.http import request
 from odoo.exceptions import UserError
 from datetime import datetime
+from ..utils import constants
 import csv
 from io import StringIO
 
@@ -21,7 +22,7 @@ class TimeTracking(http.Controller):
         # 🔹 Cabecera del informe
         writer.writerow(["Informe de fichajes"])
         writer.writerow([f"Empleado: {employee.name}"])
-        writer.writerow([f"Desde {date_start.strftime('%d/%m/%Y')} hasta {date_end.strftime('%d/%m/%Y')}"])
+        writer.writerow([f"Desde {date_start.strftime(constants.FORMATO_FECHA_INFORME)} hasta {date_end.strftime(constants.FORMATO_FECHA_INFORME)}"])
 
         # Línea en blanco
         writer.writerow([])
@@ -63,8 +64,8 @@ class TimeTracking(http.Controller):
 
     def _get_report_data(self, employee, date_start, date_end):
 
-        date_start = datetime.strptime(date_start, "%Y-%m-%d").date()
-        date_end = datetime.strptime(date_end, "%Y-%m-%d").date()
+        date_start = datetime.strptime(date_start, constants.FORMATO_FECHA_DATE).date()
+        date_end = datetime.strptime(date_end, constants.FORMATO_FECHA_DATE).date()
 
         service = self._get_service()
 

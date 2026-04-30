@@ -49,8 +49,8 @@ class report_service(models.Model):
 
             # Añadimos la línea del día.
             lines.append({
-                'date': day.strftime(constants.FORMATO_FECHA), # Formateo la fecha a tipo String y le doy el formato deseado.
-                'date_url': day.strftime("%Y-%m-%d"), # Para usar en el controller en las http.route.
+                'date': day.strftime(constants.FORMATO_FECHA_INFORME), 
+                'date_url': day.strftime(constants.FORMATO_FECHA_DATE), 
                 'detail': detail,
                 'hours': worked_hours_day,
             })
@@ -151,8 +151,8 @@ class report_service(models.Model):
             {
                 'doc': {
                     'employee_name': employee.name,
-                    'date_start': date_start.strftime("%d/%m/%Y"),
-                    'date_end': date_end.strftime("%d/%m/%Y"),
+                    'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
+                    'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
                     'lines': lines,
                     'total_worked_hours': summary['total_worked_hours'],
                     'expected_hours': summary['expected_hours'],
@@ -170,8 +170,8 @@ class report_service(models.Model):
                 {
                     'doc': {
                         'employee_name': employee.name,
-                        'date_start': date_start.strftime("%d/%m/%Y"),
-                        'date_end': date_end.strftime("%d/%m/%Y"),
+                        'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
+                        'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
                     }
                 }
             )
@@ -191,7 +191,7 @@ class report_service(models.Model):
             email_to = constants.EMAIL_ADMIN
 
         mail = self.env['mail.mail'].create({
-            'subject': f'Informe fichajes {date_start} - {date_end}',
+            'subject': f'Informe fichajes {date_start.strftime(constants.FORMATO_FECHA_INFORME)} - {date_end.strftime(constants.FORMATO_FECHA_INFORME)}',
             'email_from': formataddr(('SuperDAM, S.L.', 'no_reply@superdam.es')),
             'email_to': email_to,
             'body_html': html,

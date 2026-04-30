@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 from datetime import datetime
+from ..utils import constants
 
 
 class record(models.Model):
@@ -160,8 +161,8 @@ class record(models.Model):
             raise UserError("Faltan datos para generar el informe.")
 
         employee_id = int(employee_id)
-        date_start = datetime.strptime(date_start, "%Y-%m-%d").date()
-        date_end = datetime.strptime(date_end, "%Y-%m-%d").date()
+        date_start = datetime.strptime(date_start, constants.FORMATO_FECHA_DATE).date()
+        date_end = datetime.strptime(date_end, constants.FORMATO_FECHA_DATE).date()
 
         return employee_id, date_start, date_end
     
@@ -216,8 +217,8 @@ class record(models.Model):
 
         data = {
             'employee_name': employee.name,
-            'date_start': date_start.strftime("%d/%m/%Y"),
-            'date_end': date_end.strftime("%d/%m/%Y"),
+            'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
+            'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
             'lines': lines,
             'total_worked_hours': summary['total_worked_hours'],
             'expected_hours': summary['expected_hours'],
