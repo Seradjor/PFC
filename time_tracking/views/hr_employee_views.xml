@@ -10,9 +10,19 @@
                 <!-- Insertamos una nueva pestaña al final del notebook -->
                 <xpath expr="//notebook" position="inside">
                     <page string="Fichajes">
-                        <group>
-                            <field name="id_time_tracking"/>
-                        </group>
+                        <div class="oe_button_box" style="display:flex; gap:15px; align-items:center; margin-bottom: 10px">
+                            <span style="margin-right: 20px">ID fichaje: <field name="id_time_tracking" readonly="id != False"/></span>
+
+                            <button name="action_generate_new_id"
+                                type="object"
+                                string="Generar nuevo ID"
+                                class="btn-primary"/>
+
+                            <button name="action_write_card"
+                                type="object"
+                                string="Grabar tarjeta"
+                                class="btn-primary"/>
+                        </div>
 
                         <group>
                             <field name="records_ids" mode="tree" nolabel="4">

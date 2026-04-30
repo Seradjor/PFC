@@ -6,6 +6,10 @@ EMAIL_ADMIN = "seradjor@gmail.com"
 # Duración de la jornada laboral (en horas)
 DURACION_JORNADA = 6
 
+# Franja horaria posible apertura centro de trabajo,
+HORA_MIN = 8.0 
+HORA_MAX = 22.0
+
 # Valores económicos
 HORA_EXTRA = 1.5
 HORA_FESTIVO = 2.0
@@ -25,6 +29,6 @@ FESTIVOS_2026 = {
     date(2026, 12, 25)
 }
 
-# Formatos
+# Formatos 
 FORMATO_FECHA_INFORME = "%d/%m/%Y"
 FORMATO_FECHA_DATE = "%Y-%m-%d"

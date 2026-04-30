@@ -203,9 +203,21 @@ class record(models.Model):
         }       
 
     def action_save_day(self):
+        self.ensure_one()
+
+        if self.date > fields.Date.today():
+            raise UserError("La fecha no puede ser posterior a hoy.")
+
+        if (self.time < constants.HORA_MIN or self.time > constants.HORA_MAX):
+            raise UserError(
+                f"La hora debe estar entre las {constants.HORA_MIN:02.0f}:00 y las {constants.HORA_MAX:02.0f}:00."
+            )
+
         return {
-            'type': 'ir.actions.act_window_close'
-        }    
+            "type": "ir.actions.client",
+            "tag": "reload",
+        }
+    
 
     def action_export_pdf(self):
         records, employee_id, date_start, date_end = self._get_records_for_report()

@@ -171,7 +171,7 @@
         </field>
     </record>
 
-    <record id="action_report_time_tracking" model="ir.actions.report">
+    <record model="ir.actions.report" id="action_report_time_tracking">
         <field name="name">Informe de fichajes</field>
         <field name="model">time_tracking.record</field>
         <field name="report_type">qweb-pdf</field>
@@ -195,7 +195,7 @@
       <field name="target">new</field>
     </record>
     
-    <record model="ir.actions.act_window" id="action_manual_tracking">
+    <record model="ir.actions.act_window" id="time_tracking.action_manual_tracking">
       <field name="name">Registro manual</field>
       <field name="res_model">time_tracking.record</field>
       <field name="view_mode">form</field>
