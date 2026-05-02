@@ -27,7 +27,7 @@
                         <group>
                             <field name="records_ids" mode="tree" nolabel="4">
                                 <tree string="Fichajes" create="false" edit="false" delete="false" default_order="date desc, time asc"
-                                    decoration-success="type == 'entry'" decoration-danger="type == 'exit'">
+                                    decoration-success="type == 'entry'" decoration-primary="type == 'exit'">
                                     <field name="date"/>
                                     <field name="time" widget="float_time"/>
                                     <field name="type"/>

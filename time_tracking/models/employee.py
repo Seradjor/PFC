@@ -31,6 +31,7 @@ class employee(models.Model):
             "name": "Grabación tarjeta",
             "res_model": "time_tracking.nfc_write",
             "view_mode": "form",
+            "view_id": self.env.ref("time_tracking.view_nfc_write").id,
             "target": "new",
             "context": {
                 "default_employee_id": self.id,

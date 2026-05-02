@@ -34,6 +34,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/hr_employee_views.xml',
+        'views/nfc_write.xml',
         # Datos de modelos
         'data/employees.xml',
         'data/records.xml',
