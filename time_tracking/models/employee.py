@@ -26,31 +26,17 @@ class employee(models.Model):
         if not self.id_time_tracking:
             raise UserError("Indique primero un ID de tarjeta.")
 
-        try:
-            response = requests.post(
-                "http://192.168.1.11:5001/write_card",
-                json={"code": self.id_time_tracking},
-                timeout=10
-            )
-
-            data = response.json()
-
-            if data.get("status") != "ok":
-                raise UserError(f"Error grabando tarjeta: {data.get('message')}")
-
-            return {
-                "type": "ir.actions.client",
-                "tag": "display_notification",
-                "params": {
-                    "title": "Tarjeta grabada",
-                    "message": f"ID {self.id_time_tracking} grabado correctamente.",
-                    "type": "success",
-                },
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Grabación tarjeta",
+            "res_model": "time_tracking.nfc_write",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_employee_id": self.id,
+                "default_code_to_write": self.id_time_tracking,
             }
-            
-
-        except Exception as e:
-            raise UserError(f"No se pudo comunicar con el lector NFC: {e}")
+        }
 
 
     def action_generate_new_id(self):

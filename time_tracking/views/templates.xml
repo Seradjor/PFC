@@ -73,12 +73,12 @@
                     <table class="tabla_resumen">
 
                         <tr>
-                            <td>Total horas</td>
+                            <td>Total horas realizadas</td>
                             <td><t t-out="total_worked_hours"/></td>
                         </tr>
 
                         <tr>
-                            <td>Esperadas</td>
+                            <td>Horas esperadas</td>
                             <td><t t-out="expected_hours"/></td>
                         </tr>
 
@@ -88,17 +88,17 @@
                         </tr>
 
                         <tr>
-                            <td>Extra</td>
+                            <td>Horas extra</td>
                             <td><t t-out="extra_hours"/></td>
                         </tr>
 
                         <tr>
-                            <td>Festivo</td>
+                            <td>Horas festivo</td>
                             <td><t t-out="holiday_hours"/></td>
                         </tr>
 
                         <tr>
-                            <td>Valor</td>
+                            <td>Valor horas extra/festivo</td>
                             <td><t t-out="extra_holiday_value"/></td>
                         </tr>
 

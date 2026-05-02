@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="view_nfc_write" model="ir.ui.view">
+            <field name="name">time_tracking.nfc_write.form</field>
+            <field name="model">time_tracking.nfc_write</field>
+            <field name="arch" type="xml">
+                <form string="Grabación tarjeta">
+                    <group>
+                        <span class="o_form_label" colspan="2">
+                            Pulse grabar y coloque la tarjeta en el lector.
+                        </span>
+                        <field name="employee_id" invisible="1"/>
+                        <field name="code_to_write" invisible="1"/>
+                    </group>
+
+                    <footer>
+                        <button string="Grabar"
+                                type="object"
+                                name="action_confirm_write"
+                                class="btn-primary"/>
+
+                        <button string="Cancelar"
+                                special="cancel"
+                                class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
