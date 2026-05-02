@@ -5,27 +5,36 @@ import time
 import threading
 import subprocess
 import xmlrpc.client
-
 import tkinter as tk
 from tkinter import messagebox
-
 from smartcard.System import readers
-from smartcard.Exceptions import CardConnectionException
-
 from flask import Flask, request, jsonify
-from write_nfc import write_to_card  # tu función ya existente
-
-# ============================================================
-#  VARIABLES GLOBALES
-# ============================================================
-
-grabando = False   # Pausa el fichaje cuando se está grabando una tarjeta
 
 
 # ============================================================
-#  POPUP PARA MENSAJES EMERGENTES
+#  CONFIGURACIÓN GLOBAL
 # ============================================================
 
+writing_card = False  # Pausa el fichaje cuando se está grabando una tarjeta
+
+# Odoo
+ODOO_URL = "http://localhost:8069"
+ODOO_DB = "time_tracking_db"
+ODOO_USER = "nfc_reader"
+ODOO_PASSWORD = "nfc_reader210526"
+
+# NFC
+CLASSIC_KEY_A = [0xFF] * 6
+READ_BLOCK_16 = lambda block: [0xFF, 0xB0, 0x00, block, 0x10] # Lee 16 bytes del bloque indicado (MIFARE Classic).
+LOAD_KEY = [0xFF, 0x82, 0x00, 0x00, 0x06] + CLASSIC_KEY_A # Carga en el lector la clave configurada.
+AUTH_BLOCK = lambda block: [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, block, 0x60, 0x00] # Autentica el bloque con Key A previamente cargada.
+
+
+# ============================================================
+#  UTILIDADES
+# ============================================================
+
+# Muestra un popup modal en primer plano.
 def popup(title, message):
     root = tk.Tk()
     root.withdraw()
@@ -33,11 +42,7 @@ def popup(title, message):
     messagebox.showinfo(title, message)
     root.destroy()
 
-
-# ============================================================
-#  ARRANCAMOS SERVICIO pcscd (LECTOR NFC)
-# ============================================================
-
+# Arranca el servicio pcscd si no está activo.
 def start_pcscd():
     try:
         subprocess.run(["sudo", "systemctl", "enable", "pcscd"], check=False)
@@ -47,53 +52,33 @@ def start_pcscd():
         print("No se pudo iniciar pcscd:", e)
 
 
-# ============================================================
-#  CONFIGURACIÓN ODOO (FICHAJES)
-# ============================================================
-
-ODOO_URL = "http://localhost:8069"
-ODOO_DB = "time_tracking_db"
-ODOO_USER = "nfc_reader"
-ODOO_PASSWORD = "nfc_reader210526"
-
-common = xmlrpc.client.ServerProxy(f"{ODOO_URL}/xmlrpc/2/common")
-uid = common.authenticate(ODOO_DB, ODOO_USER, ODOO_PASSWORD, {})
-models = xmlrpc.client.ServerProxy(f"{ODOO_URL}/xmlrpc/2/object")
+# Devuelve el lector NFC disponible.
+def get_reader():
+    rlist = readers()
+    if not rlist:
+        return None
+    return next((r for r in rlist if "ACR122U" in str(r)), rlist[0])
 
 
-def fichar_en_odoo(barcode):
+# Devuelve True si hay tarjeta presente.
+def card_present(connection):
     try:
-        return models.execute_kw(
-            ODOO_DB, uid, ODOO_PASSWORD,
-            'time_tracking.record',
-            'nfc_register',
-            [barcode]
-        )
-    except Exception as e:
-        print("Error llamando a Odoo:", e)
-        return {
-            'status': 'error_read',
-            'title': 'Error lectura tarjeta',
-            'message': 'Error de lectura de tarjeta.'
-        }
+        connection.connect()
+        return True
+    except:
+        return False
 
 
-# ============================================================
-#  CONFIGURACIÓN NFC (LECTURA FICHAJES)
-# ============================================================
-
-CLASSIC_KEY_A = [0xFF] * 6
-
-GET_UID = [0xFF, 0xCA, 0x00, 0x00, 0x00]
-READ_BLOCK_16 = lambda block: [0xFF, 0xB0, 0x00, block, 0x10]
-LOAD_KEY = [0xFF, 0x82, 0x00, 0x00, 0x06] + CLASSIC_KEY_A
-AUTH_BLOCK = lambda block: [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, block, 0x60, 0x00]
-
-
+# Verifica si el estado SW1/SW2 devuelto por el lector indica éxito. El par 0x90/0x00 se interpreta como operación correcta.
 def is_sw_success(sw1, sw2):
     return (sw1, sw2) == (0x90, 0x00)
 
 
+# ============================================================
+#  LECTURA NFC
+# ============================================================
+
+# Lee el bloque 4 de una tarjeta MIFARE Classic.
 def read_block_4(connection):
     _, sw1, sw2 = connection.transmit(LOAD_KEY)
     if not is_sw_success(sw1, sw2):
@@ -110,33 +95,86 @@ def read_block_4(connection):
     return bytes(resp).decode('ascii', errors='ignore').rstrip('\x00')
 
 
-def card_present(conn):
+# ============================================================
+#  ESCRITURA NFC
+# ============================================================
+
+# Escribe el código en el bloque 4 de una tarjeta MIFARE Classic.
+def write_to_card(connection, code):
+
+    # Cargar clave A
+    _, sw1, sw2 = connection.transmit(LOAD_KEY)
+    if not is_sw_success(sw1, sw2):
+        raise Exception("Error cargando clave A.")
+
+    # Autenticar bloque 4
+    _, sw1, sw2 = connection.transmit(AUTH_BLOCK(4))
+    if not is_sw_success(sw1, sw2):
+        raise Exception("Error autenticando bloque 4.")
+
+    # Preparar datos (16 bytes)
+    data_bytes = list(code.encode("ascii"))
+    data_bytes += [0x00] * (16 - len(data_bytes))
+
+    # Escribir bloque 4
+    write_cmd = [0xFF, 0xD6, 0x00, 0x04, 0x10] + data_bytes
+    _, sw1, sw2 = connection.transmit(write_cmd)
+
+    if not is_sw_success(sw1, sw2):
+        raise Exception("Error escribiendo en la tarjeta.")
+
+    return True
+
+
+# ============================================================
+#  ODOO
+# ============================================================
+
+# Autenticación inicial con Odoo.
+def odoo_connect():
+    common = xmlrpc.client.ServerProxy(f"{ODOO_URL}/xmlrpc/2/common")
+    uid = common.authenticate(ODOO_DB, ODOO_USER, ODOO_PASSWORD, {})
+    models = xmlrpc.client.ServerProxy(f"{ODOO_URL}/xmlrpc/2/object")
+    return uid, models
+
+UID, MODELS = odoo_connect()
+
+# Envía el código leído a Odoo.
+def fichar_en_odoo(id_time_tracking):
     try:
-        conn.connect()
-        return True
-    except:
-        return False
+        return MODELS.execute_kw(
+            ODOO_DB, UID, ODOO_PASSWORD,
+            'time_tracking.record',
+            'nfc_register',
+            [id_time_tracking]
+        )
+    except Exception as e:
+        print("Error llamando a Odoo:", e)
+        return {
+            'status': 'error_read',
+            'title': 'Error lectura tarjeta',
+            'message': 'Error de lectura de tarjeta.'
+        }
 
 
 # ============================================================
-#  BUCLE DE FICHAJES (LECTURA CONTINUA)
+#  BUCLE DE FICHAJES
 # ============================================================
 
+# Bucle principal de lectura continua.
 def fichaje_loop():
-    global grabando
+    global writing_card
 
-    rlist = readers()
-    if not rlist:
+    reader = get_reader()
+    if not reader:
         print("No se detectan lectores PC/SC.")
         return
 
-    reader = next((r for r in rlist if "ACR122U" in str(r)), rlist[0])
     print("Lector detectado:", reader)
     print("Esperando tarjetas... Ctrl+C para salir.")
 
     while True:
-
-        if grabando:
+        if writing_card:
             time.sleep(0.2)
             continue
 
@@ -144,17 +182,17 @@ def fichaje_loop():
 
         if card_present(connection):
             try:
-                barcode = read_block_4(connection)
-                if not barcode:
-                    popup("Fichajes empleado", "Error de lectura de tarjeta.")
+                id_time_tracking = read_block_4(connection)
 
+                if not id_time_tracking:
+                    popup("Fichajes empleado", "No se ha detectado ningún ID de empleado.")
                     while card_present(connection):
                         time.sleep(0.2)
                     continue
 
-                print(f"Código leído: {barcode}")
+                print(f"Código leído: {id_time_tracking}")
 
-                result = fichar_en_odoo(barcode)
+                result = fichar_en_odoo(id_time_tracking)
                 popup(result['title'], result['message'])
 
                 while card_present(connection):
@@ -166,64 +204,55 @@ def fichaje_loop():
             finally:
                 try:
                     connection.disconnect()
-                    print("Tarjeta retirada. Esperando nueva tarjeta...")
                 except:
                     pass
+
+                print("Tarjeta retirada. Esperando nueva tarjeta...")
 
         time.sleep(0.2)
 
 
 # ============================================================
-#  SERVICIO FLASK (ESCRITURA DESDE ODOO)
+#  SERVICIO FLASK (ESCRITURA)
 # ============================================================
 
 app = Flask(__name__)
 
-
+# Endpoint para grabar tarjetas desde Odoo.
 @app.post("/write_card")
 def write_card():
-    global grabando
+    global writing_card
     data = request.get_json()
     code = data.get("code")
 
     try:
-        grabando = True  # Pausar fichajes
+        writing_card = True
 
-        rlist = readers()
-        if not rlist:
-            grabando = False
+        reader = get_reader()
+        if not reader:
+            writing_card = False
             return jsonify({"status": "error", "message": "No se detectan lectores PC/SC."})
 
-        reader = next((r for r in rlist if "ACR122U" in str(r)), rlist[0])
         connection = reader.createConnection()
 
-        # Esperar tarjeta
         print("Esperando tarjeta para grabar...")
-        while True:
-            try:
-                connection.connect()
-                break
-            except:
-                time.sleep(0.2)
+        while not card_present(connection):
+            time.sleep(0.2)
 
         print("Tarjeta detectada. Grabando...")
-        write_to_card(code)
+        write_to_card(connection, code)
 
-        # Esperar retirada
-        while True:
-            try:
-                connection.connect()
-                time.sleep(0.2)
-            except:
-                break
+        while card_present(connection):
+            time.sleep(0.2)
 
-        grabando = False
         print("Grabación completada.")
         return jsonify({"status": "ok"})
 
     except Exception as e:
-        grabando = False
         return jsonify({"status": "error", "message": str(e)})
+
+    finally:
+        writing_card = False
 
 
 def run_flask():
@@ -231,15 +260,14 @@ def run_flask():
 
 
 # ============================================================
-#  MAIN UNIFICADO
+#  MAIN
 # ============================================================
 
 if __name__ == "__main__":
     try:
         start_pcscd()
 
-        flask_thread = threading.Thread(target=run_flask, daemon=True)
-        flask_thread.start()
+        threading.Thread(target=run_flask, daemon=True).start()
         print("Servicio Flask NFC /write_card escuchando en puerto 5001.")
 
         fichaje_loop()
