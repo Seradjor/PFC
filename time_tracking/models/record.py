@@ -122,7 +122,7 @@ class record(models.Model):
                 return {
                     'status': 'error',
                     'title': 'Tarjeta no registrada',
-                    'message': 'No existe ningún empleado con esta tarjeta.'
+                    'message': f"No existe ningún empleado con el ID {id_time_tracking}."
                 }
 
             # Creamos fichaje, recalculando el resto de campos.

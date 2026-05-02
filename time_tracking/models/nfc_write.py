@@ -10,7 +10,6 @@ class nfc_write(models.TransientModel):
     code_to_write = fields.Char(string="Código a grabar")
 
     def action_confirm_write(self):
-        """Llamado al pulsar Aceptar en el popup."""
         self.ensure_one()
 
         try:
@@ -27,7 +26,6 @@ class nfc_write(models.TransientModel):
         except Exception as e:
             raise UserError(f"No se pudo comunicar con el lector NFC: {e}")
 
-        # Notificación final
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
