@@ -182,24 +182,7 @@ class record(models.Model):
         return self.env['time_tracking.report_service']
 
 
-    """ BUTTONS FUNCTIONS """
-
-    def action_open_edit_day(self):
-    # Abrir vista de edición de fichajes del día
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Editar fichajes del día',
-            'res_model': 'time_tracking.record',
-            'view_mode': 'tree,form',
-            'domain': [
-                ('employee_id', '=', self.employee_id.id),
-                ('date', '=', self.date)
-            ],
-            'context': {
-                'default_employee_id': self.employee_id.id,
-                'default_date': self.date,
-            }
-        }       
+    """ BUTTONS FUNCTIONS """      
 
     def action_save_day(self):
         self.ensure_one()
