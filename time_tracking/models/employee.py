@@ -15,8 +15,6 @@ class employee(models.Model):
         string="Fichajes"
     )
 
-    # 041442864386
-
     # Constraints
     _sql_constraints = [('unique_id_time_tracking', 'unique(id_time_tracking)', 'El valor de id_time_tracking no se puede repetir')]
 

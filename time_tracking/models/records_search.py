@@ -17,8 +17,11 @@ class records_search(models.TransientModel):
 
         self.ensure_one()
 
+        if self.date_start > fields.Date.today():
+            raise UserError("Día inicial no puede ser posterior al día de hoy.")
+
         if self.date_end < self.date_start:
-            raise UserError("Día final no puede ser anterior al día inicial")
+            raise UserError("Día final no puede ser anterior al día inicial.")
 
         records = self.env['time_tracking.record'].search([
             ('employee_id', '=', self.employee_id.id),

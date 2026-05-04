@@ -10,7 +10,6 @@ class record(models.Model):
     _rec_name = 'record_id'
 
     record_id = fields.Integer(string='ID fichaje', readonly=True)
-    id_time_tracking = fields.Char(string="ID empleado", store=False)
     date = fields.Date(string='Fecha', required=True)
     time = fields.Float(string='Hora', group_operator=False, required=True)
     type = fields.Selection([('entry', 'Entrada'),('exit', 'Salida')], string='Tipo', required=True)
