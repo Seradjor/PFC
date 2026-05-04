@@ -98,7 +98,7 @@
                         </tr>
 
                         <tr>
-                            <td>Valor horas extra/festivo</td>
+                            <td>Equivalencia horas extra/festivo</td>
                             <td><t t-out="extra_holiday_value"/></td>
                         </tr>
 
@@ -123,6 +123,11 @@
                 </p>
 
                 <table border="1">
+                    <tr style="font-size: 20;">
+                            <th>Fecha</th>
+                            <th>Detalle</th>
+                            <th>Horas</th>
+                        </tr>
                     <t t-foreach="doc['lines']" t-as="line">
                         <tr>
                             <td><t t-out="line['date']"/></td>
@@ -140,7 +145,7 @@
                     <tr><td>Diferencia:</td><td><t t-out="doc['hours_difference']"/></td></tr>
                     <tr><td>Horas extra:</td><td><t t-out="doc['extra_hours']"/></td></tr>
                     <tr><td>Horas festivo:</td><td><t t-out="doc['holiday_hours']"/></td></tr>
-                    <tr><td>Valor horas extra/festivo:</td><td><t t-out="doc['extra_holiday_value']"/></td></tr>
+                    <tr><td>Equivalencia horas extra/festivo:</td><td><t t-out="doc['extra_holiday_value']"/></td></tr>
                 </table>
             </div>
         </template>

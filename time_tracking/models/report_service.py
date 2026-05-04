@@ -62,12 +62,9 @@ class report_service(models.Model):
                 expected_hours += constants.DURACION_JORNADA
             day += timedelta(days=1)
 
-        hours_difference = total_worked_hours - expected_hours
+        hours_difference = round(total_worked_hours - expected_hours, 2)
 
-        extra_holiday_value = (
-            extra_hours * constants.HORA_EXTRA +
-            holiday_hours * constants.HORA_FESTIVO
-        )
+        extra_holiday_value = round(extra_hours * constants.HORA_EXTRA + holiday_hours * constants.HORA_FESTIVO, 2)
 
         summary = {
             'total_worked_hours': total_worked_hours,
@@ -108,7 +105,7 @@ class report_service(models.Model):
 
             worked_hours += day_record.duration
 
-        return worked_hours, "".join(detail_parts)
+        return round(worked_hours, 2), "".join(detail_parts)
 
     def _format_float_hour(self, value):
         hours = int(value)

@@ -48,7 +48,7 @@ class TimeTracking(http.Controller):
         writer.writerow(["Diferencia", "", summary['hours_difference']])
         writer.writerow(["Horas extra", "", summary['extra_hours']])
         writer.writerow(["Horas festivo", "", summary['holiday_hours']])
-        writer.writerow(["Valor horas extra/festivo", "", summary['extra_holiday_value']])
+        writer.writerow(["Equivalencia horas extra/festivo", "", summary['extra_holiday_value']])
 
         csv_content = output.getvalue()
         output.close()

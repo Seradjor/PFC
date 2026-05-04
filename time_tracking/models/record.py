@@ -2,7 +2,9 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from datetime import datetime
 from ..utils import constants
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class record(models.Model):
     _name = 'time_tracking.record'
@@ -10,8 +12,8 @@ class record(models.Model):
     _rec_name = 'record_id'
 
     record_id = fields.Integer(string='ID fichaje', readonly=True)
-    date = fields.Date(string='Fecha', required=True)
-    time = fields.Float(string='Hora', group_operator=False, required=True)
+    date = fields.Date(string='Fecha', required=True, default=fields.Date.context_today)
+    time = fields.Float(string='Hora', group_operator=False, required=True, default=lambda self: self._default_time())
     type = fields.Selection([('entry', 'Entrada'),('exit', 'Salida')], string='Tipo', required=True)
     duration = fields.Float(string='Duración', compute="_compute_duration", store=True)
 
@@ -30,7 +32,7 @@ class record(models.Model):
         if not vals.get('date') or not vals.get('time'):
             now = datetime.now()
             vals['date'] = vals.get('date') or now.date()
-            vals['time'] = vals.get('time') or (now.hour + 2) + now.minute/60 + now.second/3600
+            vals['time'] = vals.get('time') or self._default_time()
 
         # Autodetectar tipo (Entry/Exit) si no viene informado
         if not vals.get('type'):
@@ -54,6 +56,13 @@ class record(models.Model):
         return next_record_id
     
     
+    def _default_time(self):
+        now = datetime.now()
+        time = (now.hour + 2) + now.minute/60 + now.second/3600
+
+        return time
+    
+
     def _calculate_type(self, employee_id, date, time):
 
         previous_record = self._get_previous_record(employee_id, date, time)
@@ -111,8 +120,6 @@ class record(models.Model):
     def nfc_register(self, id_time_tracking):
 
         try:
-            import logging
-            _logger = logging.getLogger(__name__)
 
             # Buscamos empleado por id_time_tracking
             employee = self.env['hr.employee'].search([('id_time_tracking', '=', id_time_tracking)], limit=1)
