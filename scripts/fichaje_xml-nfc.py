@@ -140,7 +140,7 @@ def odoo_connect():
 UID, MODELS = odoo_connect()
 
 # Envía el código leído a Odoo.
-def fichar_en_odoo(id_time_tracking):
+def register_new_record(id_time_tracking):
     try:
         return MODELS.execute_kw(
             ODOO_DB, UID, ODOO_PASSWORD,
@@ -162,7 +162,7 @@ def fichar_en_odoo(id_time_tracking):
 # ============================================================
 
 # Bucle principal de lectura continua.
-def fichaje_loop():
+def records_loop():
     global writing_card
 
     reader = get_reader()
@@ -192,7 +192,7 @@ def fichaje_loop():
 
                 print(f"Código leído: {id_time_tracking}")
 
-                result = fichar_en_odoo(id_time_tracking)
+                result = register_new_record(id_time_tracking)
                 popup(result['title'], result['message'])
 
                 while card_present(connection):
@@ -270,7 +270,7 @@ if __name__ == "__main__":
         threading.Thread(target=run_flask, daemon=True).start()
         print("Servicio Flask NFC /write_card escuchando en puerto 5001.")
 
-        fichaje_loop()
+        records_loop()
 
     except KeyboardInterrupt:
         print("\nPrograma terminado.")
