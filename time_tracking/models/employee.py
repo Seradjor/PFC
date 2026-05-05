@@ -1,6 +1,5 @@
 from odoo import models, fields
 from odoo.exceptions import UserError
-import requests
 import random
 
 class employee(models.Model):
@@ -9,13 +8,9 @@ class employee(models.Model):
     id_time_tracking = fields.Char(string="ID fichaje")
 
     # Relación con time_tracking_record.
-    records_ids = fields.One2many(
-        'time_tracking.record',
-        'employee_id',
-        string="Fichajes"
-    )
+    records_ids = fields.One2many('time_tracking.record', 'employee_id', string="Fichajes")
 
-    # Constraints
+    # Constraints.
     _sql_constraints = [('unique_id_time_tracking', 'unique(id_time_tracking)', 'El valor de id_time_tracking no se puede repetir')]
 
     def action_write_card(self):
@@ -33,7 +28,7 @@ class employee(models.Model):
             "target": "new",
             "context": {
                 "default_employee_id": self.id,
-                "default_code_to_write": self.id_time_tracking,
+                "default_code_to_write": self.id_time_tracking
             }
         }
 
@@ -41,10 +36,10 @@ class employee(models.Model):
     def action_generate_new_id(self):
         self.ensure_one()
 
-        # Generar ID de 12 dígitos
+        # Generar ID de 12 dígitos.
         new_id = ''.join(str(random.randint(0, 9)) for _ in range(12))
 
-        # Validar que no exista en otro empleado
+        # Validar que no exista en otro empleado.
         exists = self.search([
             ('id_time_tracking', '=', new_id),
             ('id', '!=', self.id)
@@ -53,7 +48,7 @@ class employee(models.Model):
         if exists:
             raise UserError("Se ha generado un ID duplicado. Inténtalo de nuevo.")
 
-        # Guardar el nuevo ID
+        # Guardar el nuevo ID.
         self.id_time_tracking = new_id
 
         return True

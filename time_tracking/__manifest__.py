@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "time_tracking",
+    'name': "Fichajes",
 
     'summary': "Registro de fichajes de los empleados de la empresa",
 
@@ -46,10 +46,5 @@
         'demo/demo.xml',
     ],
 
-    'assets': {
-    'time_tracking.assets_day_list': [
-        '/time_tracking/static/src/css/styles.css',
-    ],
-},
-
+    'images': ['static/description/icon.png']
 }

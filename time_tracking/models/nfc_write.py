@@ -12,20 +12,8 @@ class nfc_write(models.TransientModel):
     def action_confirm_write(self):
         self.ensure_one()
 
-        try:
-            response = requests.post(
-                "http://192.168.1.11:5001/write_card",
-                json={"code": self.code_to_write},
-                timeout=20
-            )
-            data = response.json()
-
-            if data.get("status") != "ok":
-                raise UserError(f"Error grabando tarjeta: {data.get('message')}")
-
-        except Exception as e:
-            raise UserError(f"No se pudo comunicar con el lector NFC: {e}")
-
+        self._write_card(self.code_to_write)
+        
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
@@ -38,3 +26,19 @@ class nfc_write(models.TransientModel):
                 }
             }
         }
+    
+    # Llama al servicio NFC para grabar la tarjeta.
+    def _write_card(self, code_to_write):
+        try:
+            response = requests.post(
+                "http://192.168.1.11:5001/write_card",
+                json={"code": code_to_write},
+                timeout=20
+            )
+            data = response.json()
+
+            if data.get("status") != "ok":
+                raise UserError(f"Error grabando tarjeta: {data.get('message')}")
+
+        except Exception as e:
+            raise UserError(f"No se pudo comunicar con el lector NFC: {e}")

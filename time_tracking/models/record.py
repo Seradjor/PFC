@@ -17,24 +17,23 @@ class record(models.Model):
     type = fields.Selection([('entry', 'Entrada'),('exit', 'Salida')], string='Tipo', required=True)
     duration = fields.Float(string='Duración', compute="_compute_duration", store=True)
 
-    # Relación con empleado
+    # Relación con empleado.
     employee_id = fields.Many2one('hr.employee', string='Empleado',required=True)
 
     @api.model
     def create(self, vals):
-        # Obtener el empleado
+        # Obtener el empleado.
         employee_id = vals.get('employee_id')
 
-        # Buscar el último registro de ese empleado y calculamos nuevo id
+        # Buscar el último registro de ese empleado y calculamos nuevo id.
         vals['record_id'] = self._get_next_record_id(employee_id)
 
-        # Autocompletar fecha/hora si no vienen informadas
+        # Autocompletar fecha/hora si no vienen informadas.
         if not vals.get('date') or not vals.get('time'):
-            now = datetime.now()
-            vals['date'] = vals.get('date') or now.date()
+            vals['date'] = vals.get('date') or fields.Date.context_today(self)
             vals['time'] = vals.get('time') or self._default_time()
 
-        # Autodetectar tipo (Entry/Exit) si no viene informado
+        # Autodetectar tipo (Entry/Exit) si no viene informado.
         if not vals.get('type'):
             vals['type'] = self._calculate_type(employee_id, vals['date'], vals['time'])
         
@@ -121,7 +120,7 @@ class record(models.Model):
 
         try:
 
-            # Buscamos empleado por id_time_tracking
+            # Buscamos empleado por id_time_tracking.
             employee = self.env['hr.employee'].search([('id_time_tracking', '=', id_time_tracking)], limit=1)
 
             if not employee:
@@ -132,9 +131,7 @@ class record(models.Model):
                 }
 
             # Creamos fichaje, recalculando el resto de campos.
-            new_record = self.create({
-                'employee_id': employee.id,
-            })
+            new_record = self.create({'employee_id': employee.id})
 
             # Respuesta para el popup
             return {
@@ -144,7 +141,7 @@ class record(models.Model):
             }
 
         except Exception as e:
-            # Log interno para depuración
+            # Log interno para depuración.
             _logger.error("Error en nfc_register: %s", e)
 
             return {
@@ -153,8 +150,6 @@ class record(models.Model):
                 'message': 'Ha ocurrido un error al registrar el fichaje.'
             }
     
-
-
     # Obtenemos datos de la consulta de fichajes para las acciones posteriores de los botones de la consulta.
     def _get_context(self):
         context = self.env.context
@@ -172,14 +167,13 @@ class record(models.Model):
 
         return employee_id, date_start, date_end
     
-    # NECESARIO??
     def _get_records_for_report(self):
         employee_id, date_start, date_end = self._get_context()
 
         records = self.search([
             ('employee_id', '=', employee_id),
             ('date', '>=', date_start),
-            ('date', '<=', date_end),
+            ('date', '<=', date_end)
         ])
 
         return records, employee_id, date_start, date_end
@@ -189,7 +183,7 @@ class record(models.Model):
         return self.env['time_tracking.report_service']
 
 
-    """ BUTTONS FUNCTIONS """      
+    """ Buttons functions """      
 
     def action_save_day(self):
         self.ensure_one()
@@ -213,7 +207,6 @@ class record(models.Model):
 
         employee = self.env['hr.employee'].browse(employee_id)
         service = self._get_service()
-
         lines, summary = service._generate_report(date_start, date_end, records)
 
         data = {
@@ -226,7 +219,7 @@ class record(models.Model):
             'hours_difference': summary['hours_difference'],
             'extra_hours': summary['extra_hours'],
             'holiday_hours': summary['holiday_hours'],
-            'extra_holiday_value': summary['extra_holiday_value'],
+            'extra_holiday_value': summary['extra_holiday_value']
         }
 
         return self.env.ref('time_tracking.action_report_time_tracking').report_action(
@@ -242,7 +235,7 @@ class record(models.Model):
         return {
             'type': 'ir.actions.act_url',
             'url': f'/time_tracking/report/csv/{employee_id}/{date_start}/{date_end}',
-            'target': 'self',
+            'target': 'self'
         }
 
 
@@ -261,7 +254,7 @@ class record(models.Model):
             'params': {
                 'title': 'Email enviado',
                 'message': f'Informe enviado a {employee.private_email}',
-                'type': 'success',
+                'type': 'success'
         }
     }
 

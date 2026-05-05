@@ -1,7 +1,5 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from ..utils import constants
-from datetime import timedelta
 
 class records_search(models.TransientModel):
     _name = 'time_tracking.records_search'
@@ -22,12 +20,10 @@ class records_search(models.TransientModel):
 
         if self.date_end < self.date_start:
             raise UserError("Día final no puede ser anterior al día inicial.")
+        
+        domain = self._build_domain()
 
-        records = self.env['time_tracking.record'].search([
-            ('employee_id', '=', self.employee_id.id),
-            ('date', '>=', self.date_start),
-            ('date', '<=', self.date_end),
-        ])
+        records = self.env['time_tracking.record'].search(domain)
 
         if not records:
             raise UserError('Fichajes para el empleado y las fechas indicadas no encontrados.')
@@ -39,20 +35,24 @@ class records_search(models.TransientModel):
             'view_mode': 'tree',
             'views': [
                 (self.env.ref('time_tracking.time_tracking_records_list').id, 'tree'),
-                (False, 'form'),
+                (False, 'form')
             ],
-            'domain': [
-                ('employee_id', '=', self.employee_id.id),
-                ('date', '>=', self.date_start),
-                ('date', '<=', self.date_end),
-            ],
+            'domain': domain,
             'context': {
                 'employee_id': self.employee_id.id,
                 'date_start': self.date_start,
                 'date_end': self.date_end,
-                'group_by': ['date:day'],
-            },
+                'group_by': ['date:day']
+            }
         }
+    
+    # Construye el dominio de búsqueda.
+    def _build_domain(self):
+        return [
+            ('employee_id', '=', self.employee_id.id),
+            ('date', '>=', self.date_start),
+            ('date', '<=', self.date_end),
+        ]
 
 
 

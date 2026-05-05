@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record id="view_nfc_write" model="ir.ui.view">
-            <field name="name">time_tracking.nfc_write.form</field>
+            <field name="name">Grabación tarjeta</field>
             <field name="model">time_tracking.nfc_write</field>
             <field name="arch" type="xml">
                 <form string="Grabación tarjeta">

@@ -2,7 +2,7 @@
     <data>
 
         <record model="ir.ui.view" id="view_employee_form_inherit_time_tracking">
-            <field name="name">hr.employee.form.time.tracking</field>
+            <field name="name">Pestaña fichajes</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">

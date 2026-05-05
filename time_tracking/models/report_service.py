@@ -1,5 +1,4 @@
 from email.utils import formataddr
-
 from odoo import models, fields
 from datetime import timedelta
 from ..utils import constants
@@ -16,7 +15,7 @@ class report_service(models.Model):
         return self.env['time_tracking.record'].search([
             ('employee_id', '=', employee_id),
             ('date', '>=', date_start),
-            ('date', '<=', date_end),
+            ('date', '<=', date_end)
         ], order='date asc, time asc')
 
 
@@ -28,12 +27,12 @@ class report_service(models.Model):
         holiday_hours = 0
         extra_hours = 0
 
-        # Agrupamos los fichajes por día
+        # Agrupamos los fichajes por día.
         records_by_day = {}
-        for rec in records:
-            records_by_day.setdefault(rec.date, []).append(rec)
+        for record in records:
+            records_by_day.setdefault(record.date, []).append(record)
 
-        # Procesamos cada día
+        # Procesamos cada día.
         for day, day_records in sorted(records_by_day.items()):
             worked_hours_day, detail = self._day_detail(day_records)
 
@@ -52,10 +51,10 @@ class report_service(models.Model):
                 'date': day.strftime(constants.FORMATO_FECHA_INFORME), 
                 'date_url': day.strftime(constants.FORMATO_FECHA_DATE), 
                 'detail': detail,
-                'hours': worked_hours_day,
+                'hours': worked_hours_day
             })
 
-        # Calculamos horas esperadas (cogiendo de lunes a sábado que no sean festivos)
+        # Calculamos horas esperadas (cogiendo de lunes a sábado que no sean festivos).
         day = date_start
         while day <= date_end:
             if day.weekday() < 6 and day not in constants.FESTIVOS_2026:
@@ -72,7 +71,7 @@ class report_service(models.Model):
             'hours_difference': hours_difference,
             'extra_hours': extra_hours,
             'holiday_hours': holiday_hours,
-            'extra_holiday_value': extra_holiday_value,
+            'extra_holiday_value': extra_holiday_value
         }
 
         return lines, summary
@@ -84,7 +83,7 @@ class report_service(models.Model):
         break_time = False
         worked_hours = 0.0
 
-        # Ordenamos por hora
+        # Ordenamos por hora.
         day_records = sorted(day_records, key=lambda day_record: day_record.time or 0.0)
 
         for day_record in day_records:
@@ -113,10 +112,9 @@ class report_service(models.Model):
         return f"{hours:02d}:{minutes:02d}"
     
     def send_weekly_reports(self):
-
         today = fields.Date.today()
-        end_date = today
         start_date = today - timedelta(days=6)
+        end_date = today
 
         employees = self.env['hr.employee'].search([])
 
@@ -143,55 +141,44 @@ class report_service(models.Model):
 
         lines, summary = self._generate_report(date_start, date_end, records)
 
-        html = self.env['ir.ui.view']._render_template(
-            'time_tracking.email_report_template',
-            {
-                'doc': {
-                    'employee_name': employee.name,
-                    'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
-                    'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
-                    'lines': lines,
-                    'total_worked_hours': summary['total_worked_hours'],
-                    'expected_hours': summary['expected_hours'],
-                    'hours_difference': summary['hours_difference'],
-                    'extra_hours': summary['extra_hours'],
-                    'holiday_hours': summary['holiday_hours'],
-                    'extra_holiday_value': summary['extra_holiday_value'],
-                }
-            }
-        )
-
-        if not records:
-            html = self.env['ir.ui.view']._render_template(
-                'time_tracking.email_report_template_no_records',
-                {
-                    'doc': {
-                        'employee_name': employee.name,
-                        'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
-                        'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
-                    }
-                }
-            )
-            
-        if not employee.private_email:
-            html = self.env['ir.ui.view']._render_template(
-                'time_tracking.email_report_template_no_email_info',
-                {
-                    'doc': {
-                        'employee_name': employee.name,
-                    }
-                }
-            )   
-
-
         if not email_to:
             email_to = constants.EMAIL_ADMIN
+            template = 'time_tracking.email_report_template_no_email_info'
+            context = {'employee_name': employee.name}
+
+        elif not records:
+            template = 'time_tracking.email_report_template_no_records'
+            context = {
+                'employee_name': employee.name,
+                'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
+                'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME)
+            }
+
+        else:
+            template = 'time_tracking.email_report_template'
+            context = {
+                'employee_name': employee.name,
+                'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
+                'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
+                'lines': lines,
+                'total_worked_hours': summary['total_worked_hours'],
+                'expected_hours': summary['expected_hours'],
+                'hours_difference': summary['hours_difference'],
+                'extra_hours': summary['extra_hours'],
+                'holiday_hours': summary['holiday_hours'],
+                'extra_holiday_value': summary['extra_holiday_value']
+            }
+        
+        html = self.env['ir.ui.view']._render_template(
+            template,
+            {'doc': context}
+        )  
 
         mail = self.env['mail.mail'].create({
             'subject': f'Informe fichajes {date_start.strftime(constants.FORMATO_FECHA_INFORME)} - {date_end.strftime(constants.FORMATO_FECHA_INFORME)}',
             'email_from': formataddr(('SuperDAM, S.L.', 'no_reply@superdam.es')),
             'email_to': email_to,
-            'body_html': html,
+            'body_html': html
         })
 
         _logger.info(f"FROM: {mail.email_from}")

@@ -2,38 +2,35 @@
     <data>
 
         <template id="report_template_pdf">
-
             <t t-call="web.html_container">
 
                 <meta charset="UTF-8"/>
 
                 <style>
-
                     .container {
                         max-width: 900px;
                         margin: auto;
                         font-size: 14px;
                     }
 
-                    /* --- TABLAS DEL INFORME --- */
-                    .tabla_fichajes,
-                    .tabla_resumen {
+                    table {
                         width: 100%;
                         border-collapse: collapse;
                         margin-top: 20px;
                     }
 
-                    .tabla_fichajes th,
-                    .tabla_fichajes td,
-                    .tabla_resumen td {
+                    th, td {
                         border: 1px solid #ccc;
                         padding: 8px;
                     }
 
-                    .tabla_fichajes th {
+                    th {
                         background-color: #f0f0f0;
                     }
 
+                    h1, h2, h3 {
+                        margin-bottom: 10px;
+                    }
                 </style>
 
                 <div class="container">
@@ -42,130 +39,145 @@
 
                     <h2>
                         Empleado:
-                        <t t-out="employee_name"/>
+                        <t t-esc="employee_name"/>
                     </h2>
 
                     <p>
-                        Desde <strong><t t-out="date_start"/></strong>
-                        hasta <strong><t t-out="date_end"/></strong>
+                        Desde <strong><t t-esc="date_start"/></strong>
+                        hasta <strong><t t-esc="date_end"/></strong>
                     </p>
 
-                    <table class="tabla_fichajes">
-
-                        <tr style="font-size: 20;">
-                            <th>Fecha</th>
-                            <th>Detalle</th>
-                            <th>Horas</th>
-                        </tr>
-
-                        <t t-foreach="lines" t-as="line">
+                    <!-- Tabla principal -->
+                    <table>
+                        <thead>
                             <tr>
-                                <td><t t-out="line['date']"/></td>
-                                <td><t t-out="line['detail']"/></td>
-                                <td><t t-out="line['hours']"/></td>
+                                <th>Fecha</th>
+                                <th>Detalle</th>
+                                <th>Horas</th>
                             </tr>
-                        </t>
+                        </thead>
 
+                        <tbody>
+                            <t t-foreach="lines" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line['date']"/></td>
+                                    <td><t t-esc="line['detail']"/></td>
+                                    <td><t t-esc="line['hours']"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
                     </table>
 
+                    <!-- Resumen -->
                     <h3>Resumen</h3>
 
-                    <table class="tabla_resumen">
-
-                        <tr>
-                            <td>Total horas realizadas</td>
-                            <td><t t-out="total_worked_hours"/></td>
-                        </tr>
-
-                        <tr>
-                            <td>Horas esperadas</td>
-                            <td><t t-out="expected_hours"/></td>
-                        </tr>
-
-                        <tr>
-                            <td>Diferencia</td>
-                            <td><t t-out="hours_difference"/></td>
-                        </tr>
-
-                        <tr>
-                            <td>Horas extra</td>
-                            <td><t t-out="extra_hours"/></td>
-                        </tr>
-
-                        <tr>
-                            <td>Horas festivo</td>
-                            <td><t t-out="holiday_hours"/></td>
-                        </tr>
-
-                        <tr>
-                            <td>Equivalencia horas extra/festivo</td>
-                            <td><t t-out="extra_holiday_value"/></td>
-                        </tr>
-
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Total horas realizadas</td>
+                                <td><t t-esc="total_worked_hours"/></td>
+                            </tr>
+                            <tr>
+                                <td>Horas esperadas</td>
+                                <td><t t-esc="expected_hours"/></td>
+                            </tr>
+                            <tr>
+                                <td>Diferencia</td>
+                                <td><t t-esc="hours_difference"/></td>
+                            </tr>
+                            <tr>
+                                <td>Horas extra</td>
+                                <td><t t-esc="extra_hours"/></td>
+                            </tr>
+                            <tr>
+                                <td>Horas festivo</td>
+                                <td><t t-esc="holiday_hours"/></td>
+                            </tr>
+                            <tr>
+                                <td>Equivalencia horas extra/festivo</td>
+                                <td><t t-esc="extra_holiday_value"/></td>
+                            </tr>
+                        </tbody>
                     </table>
 
                 </div>
 
             </t>
-
         </template>
 
         <template id="email_report_template">
             <div>
+
                 <h2>Informe de fichajes</h2>
 
-                <p>
-                    Empleado: <t t-out="doc['employee_name']"/>
-                </p>
+                <p>Empleado: <t t-esc="doc['employee_name']"/></p>
 
-                <p>
-                    Semana: <t t-out="doc['date_start']"/> - <t t-out="doc['date_end']"/>
-                </p>
+                <p>Semana: <t t-esc="doc['date_start']"/> - <t t-esc="doc['date_end']"/></p>
 
-                <table border="1">
-                    <tr style="font-size: 20;">
-                            <th>Fecha</th>
-                            <th>Detalle</th>
-                            <th>Horas</th>
-                        </tr>
-                    <t t-foreach="doc['lines']" t-as="line">
+                <table border="1" style="border-collapse: collapse; width: auto; gap: 10px">
+                    <thead>
                         <tr>
-                            <td><t t-out="line['date']"/></td>
-                            <td><t t-out="line['detail']"/></td>
-                            <td><t t-out="line['hours']"/></td>
+                            <th style="font-size: 14px; padding: 6px 10px;">Fecha</th>
+                            <th style="font-size: 14px; padding: 6px 10px;">Detalle</th>
+                            <th style="font-size: 14px; padding: 6px 10px;">Horas</th>
                         </tr>
-                    </t>
+                    </thead>
+
+                    <tbody>
+                        <t t-foreach="doc['lines']" t-as="line">
+                            <tr>
+                                <td style="padding: 6px 10px;"><t t-esc="line['date']"/></td>
+                                <td style="padding: 6px 10px;"><t t-esc="line['detail']"/></td>
+                                <td style="padding: 6px 10px;"><t t-esc="line['hours']"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
                 </table>
 
                 <h3>Resumen</h3>
 
-                <table border="1">
-                    <tr><td>Total horas realizadas:</td><td><t t-out="doc['total_worked_hours']"/></td></tr>
-                    <tr><td>Horas esperadas:</td><td><t t-out="doc['expected_hours']"/></td></tr>
-                    <tr><td>Diferencia:</td><td><t t-out="doc['hours_difference']"/></td></tr>
-                    <tr><td>Horas extra:</td><td><t t-out="doc['extra_hours']"/></td></tr>
-                    <tr><td>Horas festivo:</td><td><t t-out="doc['holiday_hours']"/></td></tr>
-                    <tr><td>Equivalencia horas extra/festivo:</td><td><t t-out="doc['extra_holiday_value']"/></td></tr>
+                <table border="1" style="border-collapse: collapse; width: auto;">
+                    <tbody>
+                        <tr>
+                            <td style="padding: 6px 10px;">Total horas realizadas:</td>
+                            <td style="padding: 6px 10px;"><t t-esc="doc['total_worked_hours']"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 10px;">Horas esperadas:</td>
+                            <td style="padding: 6px 10px;"><t t-esc="doc['expected_hours']"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 10px;">Diferencia:</td>
+                            <td style="padding: 6px 10px;"><t t-esc="doc['hours_difference']"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 10px;">Horas extra:</td>
+                            <td style="padding: 6px 10px;"><t t-esc="doc['extra_hours']"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 10px;">Horas festivo:</td>
+                            <td style="padding: 6px 10px;"><t t-esc="doc['holiday_hours']"/></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 10px;">Equivalencia horas extra/festivo:</td>
+                            <td style="padding: 6px 10px;"><t t-esc="doc['extra_holiday_value']"/></td>
+                        </tr>
+                    </tbody>
                 </table>
+
             </div>
         </template>
+
 
         <template id="email_report_template_no_records">
             <div>
                 <h2>Informe de fichajes</h2>
 
-                <p>
-                    Empleado: <t t-out="doc['employee_name']"/>
-                </p>
+                <p>Empleado: <t t-esc="doc['employee_name']"/></p>
 
-                <p>
-                    Semana: <t t-out="doc['date_start']"/> - <t t-out="doc['date_end']"/>
-                </p>
+                <p>Semana: <t t-esc="doc['date_start']"/> - <t t-esc="doc['date_end']"/></p>
 
-                <p>
-                    No se han realizado fichajes en el período señalado.
-                </p>
-
+                <p>No se han realizado fichajes en el período señalado.</p>
             </div>
         </template>
 
@@ -174,11 +186,9 @@
             <div>
                 <h2>Informe de fichajes</h2>
 
-                <p>
-                    No se ha podido enviar el informe semanal a <t t-out="doc['employee_name']"/> debido a un problema 
-                    con la dirección electrónica registrada en el sistema.
-                </p>
-
+                <p>No se ha podido enviar el informe semanal a
+                    <t t-esc="doc['employee_name']"/>
+                    debido a un problema con la dirección electrónica registrada.</p>
             </div>
         </template>
 

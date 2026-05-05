@@ -128,6 +128,7 @@
         <field name="report_name">time_tracking.report_template_pdf</field>
     </record>
 
+
     <!-- Consulta fichajes -->
     <record model="ir.actions.act_window" id="time_tracking.action_search_records">
         <field name="name">Consulta fichajes</field>
@@ -153,11 +154,11 @@
     <menuitem name="Inicio" id="time_tracking.menu_home" parent="time_tracking.menu_root"/>
 
     <!-- Pestañas dentro de menú "Inicio" -->
-    <menuitem name="Consulta fichajes" id="time_tracking.records_search" parent="time_tracking.menu_home"
-              action="time_tracking.action_search_records"/>
-
     <menuitem name="Nuevo fichaje" id="time_tracking.menu_manual" parent="time_tracking.menu_home"
-              action="time_tracking.action_manual_tracking"/>
+              action="time_tracking.action_manual_tracking" sequence="1"/>
+
+    <menuitem name="Consulta fichajes" id="time_tracking.records_search" parent="time_tracking.menu_home"
+              action="time_tracking.action_search_records" sequence="2"/>
 
   </data>
 </odoo>
