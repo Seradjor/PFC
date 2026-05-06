@@ -4,18 +4,18 @@ from datetime import date
 EMAIL_ADMIN = "seradjor@gmail.com"
 
 # Duración de la jornada laboral (en horas)
-DURACION_JORNADA = 6
+WORKDAY_DURATION = 6.0
 
 # Franja horaria posible apertura centro de trabajo,
-HORA_MIN = 8.0 
-HORA_MAX = 22.0
+MIN_HOUR = 8.0 
+MAX_HOUR = 22.0
 
 # Valores económicos
-HORA_EXTRA = 1.5
-HORA_FESTIVO = 2.0
+OVERTIME_HOUR = 1.5
+HOLIDAY_HOUR = 2.0
 
 # Festivos 2026
-FESTIVOS_2026 = {
+HOLIDAYS_2026 = {
     date(2026, 1, 1), 
     date(2026, 1, 6),  
     date(2026, 3, 19),  
@@ -30,5 +30,5 @@ FESTIVOS_2026 = {
 }
 
 # Formatos 
-FORMATO_FECHA_INFORME = "%d/%m/%Y"
-FORMATO_FECHA_DATE = "%Y-%m-%d"
+REPORT_DATE_FORMAT = "%d/%m/%Y"
+DATE_FORMAT = "%Y-%m-%d"

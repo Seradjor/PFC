@@ -5,7 +5,7 @@ import random
 class employee(models.Model):
     _inherit = 'hr.employee'
 
-    id_time_tracking = fields.Char(string="ID fichaje")
+    id_time_tracking = fields.Char(string="ID fichaje", index=True)
 
     # Relación con time_tracking_record.
     records_ids = fields.One2many('time_tracking.record', 'employee_id', string="Fichajes")

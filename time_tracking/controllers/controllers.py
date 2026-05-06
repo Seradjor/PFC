@@ -29,8 +29,8 @@ class TimeTracking(http.Controller):
 
     def _get_report_data(self, employee, date_start, date_end):
 
-        date_start = datetime.strptime(date_start, constants.FORMATO_FECHA_DATE).date()
-        date_end = datetime.strptime(date_end, constants.FORMATO_FECHA_DATE).date()
+        date_start = datetime.strptime(date_start, constants.DATE_FORMAT).date()
+        date_end = datetime.strptime(date_end, constants.DATE_FORMAT).date()
 
         service = self._get_service()
 
@@ -63,7 +63,7 @@ class TimeTracking(http.Controller):
         # 🔹 Cabecera del informe.
         writer.writerow(["Informe de fichajes"])
         writer.writerow([f"Empleado: {employee.name}"])
-        writer.writerow([f"Desde {date_start.strftime(constants.FORMATO_FECHA_INFORME)} hasta {date_end.strftime(constants.FORMATO_FECHA_INFORME)}"])
+        writer.writerow([f"Desde {date_start.strftime(constants.REPORT_DATE_FORMAT)} hasta {date_end.strftime(constants.REPORT_DATE_FORMAT)}"])
 
         # Línea en blanco.
         writer.writerow([])

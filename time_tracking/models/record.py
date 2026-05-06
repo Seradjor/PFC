@@ -162,8 +162,8 @@ class record(models.Model):
             raise UserError("Faltan datos para generar el informe.")
 
         employee_id = int(employee_id)
-        date_start = datetime.strptime(date_start, constants.FORMATO_FECHA_DATE).date()
-        date_end = datetime.strptime(date_end, constants.FORMATO_FECHA_DATE).date()
+        date_start = datetime.strptime(date_start, constants.DATE_FORMAT).date()
+        date_end = datetime.strptime(date_end, constants.DATE_FORMAT).date()
 
         return employee_id, date_start, date_end
     
@@ -191,9 +191,9 @@ class record(models.Model):
         if self.date > fields.Date.today():
             raise UserError("La fecha no puede ser posterior a hoy.")
 
-        if (self.time < constants.HORA_MIN or self.time > constants.HORA_MAX):
+        if (self.time < constants.MIN_HOUR or self.time > constants.MAX_HOUR):
             raise UserError(
-                f"La hora debe estar entre las {constants.HORA_MIN:02.0f}:00 y las {constants.HORA_MAX:02.0f}:00."
+                f"La hora debe estar entre las {constants.MIN_HOUR:02.0f}:00 y las {constants.MAX_HOUR:02.0f}:00."
             )
 
         return {
@@ -211,8 +211,8 @@ class record(models.Model):
 
         data = {
             'employee_name': employee.name,
-            'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
-            'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
+            'date_start': date_start.strftime(constants.REPORT_DATE_FORMAT),
+            'date_end': date_end.strftime(constants.REPORT_DATE_FORMAT),
             'lines': lines,
             'total_worked_hours': summary['total_worked_hours'],
             'expected_hours': summary['expected_hours'],

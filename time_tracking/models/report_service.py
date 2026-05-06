@@ -37,10 +37,10 @@ class report_service(models.Model):
             worked_hours_day, detail = self._day_detail(day_records)
 
             # Calculamos horas trabajadas en festivo y las horas extra.
-            if day in constants.FESTIVOS_2026:
+            if day in constants.HOLIDAYS_2026:
                 holiday_hours += worked_hours_day
             else:
-                diff = worked_hours_day - constants.DURACION_JORNADA
+                diff = worked_hours_day - constants.WORKDAY_DURATION
                 if diff > 0:
                     extra_hours += diff
 
@@ -48,8 +48,8 @@ class report_service(models.Model):
 
             # Añadimos la línea del día.
             lines.append({
-                'date': day.strftime(constants.FORMATO_FECHA_INFORME), 
-                'date_url': day.strftime(constants.FORMATO_FECHA_DATE), 
+                'date': day.strftime(constants.REPORT_DATE_FORMAT), 
+                'date_url': day.strftime(constants.DATE_FORMAT), 
                 'detail': detail,
                 'hours': worked_hours_day
             })
@@ -57,13 +57,13 @@ class report_service(models.Model):
         # Calculamos horas esperadas (cogiendo de lunes a sábado que no sean festivos).
         day = date_start
         while day <= date_end:
-            if day.weekday() < 6 and day not in constants.FESTIVOS_2026:
-                expected_hours += constants.DURACION_JORNADA
+            if day.weekday() < 6 and day not in constants.HOLIDAYS_2026:
+                expected_hours += constants.WORKDAY_DURATION
             day += timedelta(days=1)
 
         hours_difference = round(total_worked_hours - expected_hours, 2)
 
-        extra_holiday_value = round(extra_hours * constants.HORA_EXTRA + holiday_hours * constants.HORA_FESTIVO, 2)
+        extra_holiday_value = round(extra_hours * constants.OVERTIME_HOUR + holiday_hours * constants.HOLIDAY_HOUR, 2)
 
         summary = {
             'total_worked_hours': total_worked_hours,
@@ -150,16 +150,16 @@ class report_service(models.Model):
             template = 'time_tracking.email_report_template_no_records'
             context = {
                 'employee_name': employee.name,
-                'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
-                'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME)
+                'date_start': date_start.strftime(constants.REPORT_DATE_FORMAT),
+                'date_end': date_end.strftime(constants.REPORT_DATE_FORMAT)
             }
 
         else:
             template = 'time_tracking.email_report_template'
             context = {
                 'employee_name': employee.name,
-                'date_start': date_start.strftime(constants.FORMATO_FECHA_INFORME),
-                'date_end': date_end.strftime(constants.FORMATO_FECHA_INFORME),
+                'date_start': date_start.strftime(constants.REPORT_DATE_FORMAT),
+                'date_end': date_end.strftime(constants.REPORT_DATE_FORMAT),
                 'lines': lines,
                 'total_worked_hours': summary['total_worked_hours'],
                 'expected_hours': summary['expected_hours'],
@@ -175,7 +175,7 @@ class report_service(models.Model):
         )  
 
         mail = self.env['mail.mail'].create({
-            'subject': f'Informe fichajes {date_start.strftime(constants.FORMATO_FECHA_INFORME)} - {date_end.strftime(constants.FORMATO_FECHA_INFORME)}',
+            'subject': f'Informe fichajes {date_start.strftime(constants.REPORT_DATE_FORMAT)} - {date_end.strftime(constants.REPORT_DATE_FORMAT)}',
             'email_from': formataddr(('SuperDAM, S.L.', 'no_reply@superdam.es')),
             'email_to': email_to,
             'body_html': html
