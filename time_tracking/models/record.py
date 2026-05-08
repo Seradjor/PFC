@@ -195,6 +195,13 @@ class record(models.Model):
             raise UserError(
                 f"La hora debe estar entre las {constants.MIN_HOUR:02.0f}:00 y las {constants.MAX_HOUR:02.0f}:00."
             )
+        
+        previous_record = self._get_previous_record(self.employee_id.id, self.date, self.time)
+
+        if previous_record and previous_record.type == self.type:
+            raise UserError(
+                f"El tipo de fichaje indicado es igual al anterior fichaje registrado. Por favor, revíselo."
+            )
 
         return {
             "type": "ir.actions.client",
