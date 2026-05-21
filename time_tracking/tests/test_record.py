@@ -53,7 +53,7 @@ class test_record(TransactionCase):
     def test_nfc_duration(self):
 
         # Fichaje realizado manualmente previo a la ejecución del test
-        self.create_record(self.employee.id, date(2026, 5, 6), 9.0, 'entry')
+        self.create_record(self.employee.id, date.today(), 9.0, 'entry')
 
         # Fichajes realizados desde lector nfc
         self.record.nfc_register('041459228921')
